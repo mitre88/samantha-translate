@@ -124,7 +124,6 @@ final class TranslationSession: ObservableObject {
                         "format": ["type": "audio/pcm", "rate": 24000],
                         "turn_detection": [
                             "type": "server_vad",
-                            "threshold": 0.45,
                             "prefix_padding_ms": 160,
                             "silence_duration_ms": 240,
                             "create_response": true,
