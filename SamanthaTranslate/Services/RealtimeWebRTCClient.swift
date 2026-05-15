@@ -5,6 +5,15 @@ import Foundation
 final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
     private static let initializeWebRTC: Void = {
         RTCInitializeSSL()
+        let configuration = RTCAudioSessionConfiguration.webRTC()
+        configuration.category = AVAudioSession.Category.playAndRecord.rawValue
+        configuration.categoryOptions = [.defaultToSpeaker, .allowBluetoothHFP]
+        configuration.mode = AVAudioSession.Mode.voiceChat.rawValue
+        configuration.sampleRate = 48_000
+        configuration.ioBufferDuration = 0.02
+        configuration.inputNumberOfChannels = 1
+        configuration.outputNumberOfChannels = 1
+        RTCAudioSessionConfiguration.setWebRTC(configuration)
     }()
 
     private var peerConnectionFactory: RTCPeerConnectionFactory?
@@ -92,19 +101,34 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
         pendingSessionUpdate = nil
         onEvent = nil
         onFailure = nil
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        deactivateAudioSession()
     }
 
     private func configureAudioSession() throws {
-        let webRTCAudioSession = RTCAudioSession.sharedInstance()
-        webRTCAudioSession.useManualAudio = false
-        webRTCAudioSession.isAudioEnabled = true
+        let session = RTCAudioSession.sharedInstance()
+        session.useManualAudio = true
+        session.isAudioEnabled = true
+        session.ignoresPreferredAttributeConfigurationErrors = true
+        session.lockForConfiguration()
+        defer { session.unlockForConfiguration() }
 
-        let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
+        try session.setCategory(
+            AVAudioSession.Category.playAndRecord,
+            mode: AVAudioSession.Mode.voiceChat,
+            options: [.defaultToSpeaker, .allowBluetoothHFP]
+        )
         try session.setPreferredSampleRate(48_000)
         try session.setPreferredIOBufferDuration(0.02)
+        try session.overrideOutputAudioPort(.speaker)
         try session.setActive(true)
+    }
+
+    private func deactivateAudioSession() {
+        let session = RTCAudioSession.sharedInstance()
+        session.isAudioEnabled = false
+        session.lockForConfiguration()
+        defer { session.unlockForConfiguration() }
+        try? session.setActive(false)
     }
 
     private func flushPendingSessionUpdateIfNeeded() {
@@ -159,7 +183,21 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
 
 extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {}
-    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {}
+
+    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd rtpReceiver: RTCRtpReceiver, streams mediaStreams: [RTCMediaStream]) {
+        if rtpReceiver.track?.kind == kRTCMediaStreamTrackKindAudio {
+            ensureAudioPlayoutEnabled()
+            rtpReceiver.track?.isEnabled = true
+        }
+    }
+
+    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
+        if stream.audioTracks.isEmpty == false {
+            ensureAudioPlayoutEnabled()
+            stream.audioTracks.forEach { $0.isEnabled = true }
+        }
+    }
+
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {}
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {}
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {}
@@ -167,7 +205,9 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {}
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        if newState == .failed || newState == .disconnected || newState == .closed {
+        if newState == .connected || newState == .completed {
+            ensureAudioPlayoutEnabled()
+        } else if newState == .failed || newState == .disconnected || newState == .closed {
             Task { @MainActor in onFailure?("The realtime audio connection closed.") }
         }
     }
@@ -178,16 +218,18 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
         flushPendingSessionUpdateIfNeeded()
     }
 
-    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd rtpReceiver: RTCRtpReceiver, streams mediaStreams: [RTCMediaStream]) {
-        if rtpReceiver.track?.kind == kRTCMediaStreamTrackKindAudio {
-            RTCAudioSession.sharedInstance().isAudioEnabled = true
+    func peerConnection(_ peerConnection: RTCPeerConnection, didStartReceivingOn transceiver: RTCRtpTransceiver) {
+        if transceiver.mediaType == RTCRtpMediaType.audio {
+            ensureAudioPlayoutEnabled()
         }
     }
 
-    func peerConnection(_ peerConnection: RTCPeerConnection, didStartReceivingOn transceiver: RTCRtpTransceiver) {
-        if transceiver.mediaType == RTCRtpMediaType.audio {
-            RTCAudioSession.sharedInstance().isAudioEnabled = true
-        }
+    private func ensureAudioPlayoutEnabled() {
+        let session = RTCAudioSession.sharedInstance()
+        session.isAudioEnabled = true
+        session.lockForConfiguration()
+        defer { session.unlockForConfiguration() }
+        try? session.overrideOutputAudioPort(.speaker)
     }
 }
 
