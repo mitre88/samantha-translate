@@ -20,9 +20,11 @@
   <string>$(CURRENT_PROJECT_VERSION)</string>
   <key>LSRequiresIPhoneOS</key>
   <true/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Samantha Translate uses the microphone to translate speech in real time. Audio is not saved.</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Samantha Translate uses the microphone to translate speech in real time. Audio is not saved.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Samantha Translate uses realtime media components that may include camera access. Voice translation works without saving camera data.</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
