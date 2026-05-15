@@ -28,7 +28,7 @@ xcodebuild -project SamanthaTranslate.xcodeproj -scheme SamanthaTranslate -desti
 
 ## StoreKit testing
 
-The shared Xcode scheme uses `SamanthaTranslate/Resources/SamanthaTranslate.storekit` for local purchase testing. Run the app from Xcode with the `SamanthaTranslate` scheme and the native Apple subscription sheet can start the 3-day trial without a real App Store purchase.
+The shared Xcode scheme uses `StoreKit/SamanthaTranslate.storekit` for local purchase testing. Run the app from Xcode with the `SamanthaTranslate` scheme and the native Apple subscription sheet can start the 3-day trial without a real App Store purchase.
 
 For end-to-end entitlement testing against Apple's sandbox, install the App Store Connect build through TestFlight or use a Sandbox Apple Account. Sandbox purchases are not charged, but they require an Apple testing environment; a normal App Store account in a development build can show environment permission errors.
 

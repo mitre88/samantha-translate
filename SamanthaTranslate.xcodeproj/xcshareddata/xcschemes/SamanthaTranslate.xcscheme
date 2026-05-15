@@ -60,7 +60,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../SamanthaTranslate/Resources/SamanthaTranslate.storekit">
+         identifier = "../../StoreKit/SamanthaTranslate.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

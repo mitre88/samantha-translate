@@ -50,15 +50,42 @@ final class BackendClient {
         let (data, response) = try await urlSession.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw BackendError.invalidResponse }
         guard (200..<300).contains(http.statusCode) else {
-            throw BackendError.server(String(data: data, encoding: .utf8) ?? "HTTP \(http.statusCode)")
+            throw BackendError.server(Self.serverErrorMessage(from: data, statusCode: http.statusCode))
         }
         return try JSONDecoder().decode(RealtimeTokenResponse.self, from: data)
+    }
+
+    private static func serverErrorMessage(from data: Data, statusCode: Int) -> String {
+        if let envelope = try? JSONDecoder().decode(ServerErrorEnvelope.self, from: data) {
+            if envelope.error == "openai_token_failed",
+               let message = envelope.detail?.error?.message {
+                return "OpenAI voice token failed: \(message)"
+            }
+            if let message = envelope.detail?.error?.message { return message }
+            if let error = envelope.error { return error.replacingOccurrences(of: "_", with: " ") }
+        }
+        return String(data: data, encoding: .utf8) ?? "HTTP \(statusCode)"
     }
 }
 
 private struct RealtimeTokenRequest: Encodable {
     let entitlement: EntitlementPayload
     let outputLanguage: String
+}
+
+private struct ServerErrorEnvelope: Decodable {
+    let error: String?
+    let detail: OpenAIErrorEnvelope?
+}
+
+private struct OpenAIErrorEnvelope: Decodable {
+    let error: OpenAIErrorMessage?
+}
+
+private struct OpenAIErrorMessage: Decodable {
+    let message: String?
+    let type: String?
+    let code: String?
 }
 
 enum BackendError: LocalizedError {

@@ -19,7 +19,6 @@
 		B45BFB9CC47B5B1D1C9B6B05 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */; };
 		B655DA5293617ACF9330690D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B541BDC25E8F2589AAC035 /* Assets.xcassets */; };
 		BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */; };
-		C0C062B80A54363D343B9D66 /* SamanthaTranslate.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 256BA37CD31FCBDB5B12B16B /* SamanthaTranslate.storekit */; };
 		D7DA661CFDA046DF393F69CA /* SamanthaTranslateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */; };
 		F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C70E0972F5C47DB5C1139C59 /* Localizable.strings */; };
 /* End PBXBuildFile section */
@@ -29,7 +28,6 @@
 		08D2164CF75B3F47838CFCC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementStore.swift; sourceTree = "<group>"; };
 		1F6C977CD7896E25D8BD357D /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
-		256BA37CD31FCBDB5B12B16B /* SamanthaTranslate.storekit */ = {isa = PBXFileReference; path = SamanthaTranslate.storekit; sourceTree = "<group>"; };
 		3C03BD626FFE8A8C71C14EBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		50643992C170F035C6162CFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		548B0F822590195EF9DAEB4D /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
@@ -49,14 +47,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		0CD87C62AA402935A913CB25 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				256BA37CD31FCBDB5B12B16B /* SamanthaTranslate.storekit */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		1294E15AFAB965EB5AB35FD8 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,7 +70,6 @@
 				F026BB1BED0807EC9CD18B13 /* DesignSystem */,
 				1294E15AFAB965EB5AB35FD8 /* Features */,
 				C70E0972F5C47DB5C1139C59 /* Localizable.strings */,
-				0CD87C62AA402935A913CB25 /* Resources */,
 				B7C224124EFF02FB0073FA02 /* Services */,
 			);
 			path = SamanthaTranslate;
@@ -186,7 +175,6 @@
 				B655DA5293617ACF9330690D /* Assets.xcassets in Resources */,
 				916DADA94A33A04F08449BE1 /* LaunchScreen.storyboard in Resources */,
 				F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */,
-				C0C062B80A54363D343B9D66 /* SamanthaTranslate.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +251,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -365,7 +353,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
 				ENABLE_NS_ASSERTIONS = NO;

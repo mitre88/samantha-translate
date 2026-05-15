@@ -17,6 +17,9 @@
 "onboarding.continue" = "Continuar";
 "paywall.title" = "Empieza con 3 días gratis";
 "paywall.subtitle" = "Después US$4.99 por semana. Cancela cuando quieras desde Apple.";
+"paywall.native_badge" = "Suscripción nativa de Apple";
+"paywall.apple_checkout" = "La prueba gratis y la suscripción semanal las gestiona Apple.";
+"paywall.loading" = "Revisando estado de suscripción en Apple";
 "paywall.line.trial" = "Prueba gratis de 3 días para nuevos suscriptores";
 "paywall.line.realtime" = "Traducción de voz en tiempo real con OpenAI";
 "paywall.line.privacy" = "Sin historial de audio ni transcripciones";
@@ -37,4 +40,5 @@
 "settings.privacy" = "Privacidad";
 "settings.privacy.note" = "Samantha Translate no guarda audio ni transcripciones.";
 "settings.privacy.link" = "Política de privacidad";
+"settings.terms.link" = "Términos";
 "settings.support.link" = "Soporte";

@@ -17,6 +17,9 @@
 "onboarding.continue" = "继续";
 "paywall.title" = "先免费试用 3 天";
 "paywall.subtitle" = "之后每周 4.99 美元。可随时在 Apple 订阅中取消。";
+"paywall.native_badge" = "Apple 原生订阅";
+"paywall.apple_checkout" = "免费试用和每周订阅均由 Apple 处理。";
+"paywall.loading" = "正在检查 Apple 订阅状态";
 "paywall.line.trial" = "新订阅用户可免费试用 3 天";
 "paywall.line.realtime" = "由 OpenAI 支持的实时语音翻译";
 "paywall.line.privacy" = "不保存音频或转写历史";
@@ -37,4 +40,5 @@
 "settings.privacy" = "隐私";
 "settings.privacy.note" = "Samantha Translate 不保存音频或转写。";
 "settings.privacy.link" = "隐私政策";
+"settings.terms.link" = "条款";
 "settings.support.link" = "支持";

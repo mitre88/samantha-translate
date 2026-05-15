@@ -3,18 +3,31 @@ import SwiftUI
 
 struct PaywallView: View {
     @EnvironmentObject private var entitlementStore: EntitlementStore
+    private let privacyURL = URL(string: "https://samantha-translate-mitre88.vercel.app/#privacy")!
+    private let termsURL = URL(string: "https://samantha-translate-mitre88.vercel.app/#terms")!
 
     var body: some View {
         NavigationStack {
-            SubscriptionStoreView(productIDs: [EntitlementStore.weeklyProductID]) {
-                PaywallHeader()
+            ZStack {
+                AppTheme.pageBackground.ignoresSafeArea()
+
+                SubscriptionStoreView(productIDs: [EntitlementStore.weeklyProductID]) {
+                    PaywallHeader()
+                }
+                .subscriptionStoreControlStyle(.buttons)
+                .subscriptionStoreButtonLabel(.multiline)
+                .storeButton(.visible, for: .restorePurchases)
             }
-            .subscriptionStoreControlStyle(.buttons)
-            .subscriptionStoreButtonLabel(.multiline)
-            .storeButton(.visible, for: .restorePurchases)
-            .background(AppTheme.pageBackground.ignoresSafeArea())
             .navigationTitle("app.name")
             .navigationBarTitleDisplayMode(.inline)
+            .safeAreaInset(edge: .bottom) {
+                PaywallFooter(
+                    isLoading: entitlementStore.isLoading,
+                    errorMessage: entitlementStore.errorMessage,
+                    privacyURL: privacyURL,
+                    termsURL: termsURL
+                )
+            }
         }
         .task { await entitlementStore.refresh() }
     }
@@ -22,9 +35,16 @@ struct PaywallView: View {
 
 private struct PaywallHeader: View {
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            VoiceOrb(isListening: false, size: 108)
-                .padding(.top, AppSpacing.lg)
+        VStack(spacing: AppSpacing.md) {
+            Label("paywall.native_badge", systemImage: "apple.logo")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.muted)
+                .padding(.horizontal, AppSpacing.sm)
+                .padding(.vertical, AppSpacing.xs)
+                .background(.thinMaterial, in: Capsule(style: .continuous))
+
+            VoiceOrb(isListening: false, size: 92)
+                .padding(.top, AppSpacing.xs)
 
             VStack(spacing: AppSpacing.sm) {
                 Text("paywall.title")
@@ -46,12 +66,6 @@ private struct PaywallHeader: View {
                 PaywallLine(icon: "speaker.wave.3.fill", text: "paywall.line.realtime")
                 PaywallLine(icon: "lock.fill", text: "paywall.line.privacy")
             }
-
-            Text("paywall.disclaimer")
-                .font(.caption)
-                .foregroundStyle(AppTheme.muted)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, AppSpacing.lg)
         .padding(.bottom, AppSpacing.md)
@@ -67,5 +81,50 @@ struct PaywallLine: View {
             .font(.subheadline.weight(.medium))
             .foregroundStyle(.primary)
             .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct PaywallFooter: View {
+    let isLoading: Bool
+    let errorMessage: String?
+    let privacyURL: URL
+    let termsURL: URL
+
+    var body: some View {
+        VStack(spacing: AppSpacing.xs) {
+            if isLoading {
+                ProgressView("paywall.loading")
+                    .font(.caption)
+            }
+
+            if let errorMessage {
+                Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Text("paywall.apple_checkout")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.center)
+
+            Text("paywall.disclaimer")
+                .font(.caption2)
+                .foregroundStyle(AppTheme.muted)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: AppSpacing.md) {
+                Link("settings.privacy.link", destination: privacyURL)
+                Link("settings.terms.link", destination: termsURL)
+            }
+            .font(.caption2.weight(.medium))
+        }
+        .padding(.horizontal, AppSpacing.lg)
+        .padding(.vertical, AppSpacing.sm)
+        .frame(maxWidth: .infinity)
+        .background(.regularMaterial)
     }
 }

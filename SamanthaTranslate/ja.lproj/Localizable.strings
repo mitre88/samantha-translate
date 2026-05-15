@@ -17,6 +17,9 @@
 "onboarding.continue" = "続ける";
 "paywall.title" = "3日間無料で開始";
 "paywall.subtitle" = "その後は週4.99米ドル。Appleのサブスクリプションでいつでも解約できます。";
+"paywall.native_badge" = "Apple のネイティブサブスクリプション";
+"paywall.apple_checkout" = "無料トライアルと週額サブスクリプションは Apple が処理します。";
+"paywall.loading" = "Apple のサブスクリプション状態を確認中";
 "paywall.line.trial" = "新規購読者は3日間無料トライアル";
 "paywall.line.realtime" = "OpenAIによるリアルタイム音声翻訳";
 "paywall.line.privacy" = "音声や文字起こし履歴を保存しません";
@@ -37,4 +40,5 @@
 "settings.privacy" = "プライバシー";
 "settings.privacy.note" = "Samantha Translate は音声や文字起こしを保存しません。";
 "settings.privacy.link" = "プライバシーポリシー";
+"settings.terms.link" = "利用規約";
 "settings.support.link" = "サポート";
