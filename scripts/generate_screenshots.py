@@ -1,67 +1,39 @@
 from pathlib import Path
+from textwrap import wrap
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "AppStore" / "Screenshots" / "generated"
+SOURCES = ROOT / "AppStore" / "MarketingSources"
 SIZE = (1320, 2868)
 
-SCREENS = [
-    {
-        "file": "01-live-orb.png",
-        "title": "Listen once. Understand now.",
-        "subtitle": "Samantha hears speech and speaks the translation in your language.",
-        "scene": "orb",
-        "accent": (132, 229, 255),
-    },
-    {
-        "file": "02-conversation.png",
-        "title": "Built for live conversations",
-        "subtitle": "Auto-detects the speaker and returns natural translated speech.",
-        "scene": "conversation",
-        "accent": (175, 244, 213),
-    },
-    {
-        "file": "03-trial-paywall.png",
-        "title": "Try Pro for 3 days",
-        "subtitle": "Then $4.99/week through Apple. Cancel anytime in Apple settings.",
-        "scene": "paywall",
-        "accent": (255, 214, 122),
-    },
-    {
-        "file": "04-language-control.png",
-        "title": "Your output language stays clear",
-        "subtitle": "Choose the language Samantha speaks back to you.",
-        "scene": "languages",
-        "accent": (178, 169, 255),
-    },
-    {
-        "file": "05-private-mode.png",
-        "title": "Private by design",
-        "subtitle": "No saved audio, no transcript history, no chat memory.",
-        "scene": "privacy",
-        "accent": (255, 173, 188),
-    },
-    {
-        "file": "06-interview-mode.png",
-        "title": "Useful when the room moves fast",
-        "subtitle": "For interviews, travel, calls, and quick language switches.",
-        "scene": "interview",
-        "accent": (120, 224, 190),
-    },
-]
+BLACK = (5, 7, 10)
+PANEL = (18, 21, 25)
+WHITE = (248, 250, 252)
+TEXT = (246, 248, 250)
+MUTED = (158, 163, 172)
+CYAN = (108, 225, 255)
+GREEN = (122, 242, 190)
+YELLOW = (255, 210, 110)
 
 
-def font(size, bold=False):
-    names = [
-        "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
-        "/System/Library/Fonts/SFNS.ttf",
-    ]
-    for name in names:
+def font(size, weight="regular"):
+    candidates = {
+        "bold": [
+            "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+            "/System/Library/Fonts/SFNS.ttf",
+        ],
+        "regular": [
+            "/System/Library/Fonts/Supplemental/Arial.ttf",
+            "/System/Library/Fonts/SFNS.ttf",
+        ],
+    }[weight]
+    for candidate in candidates:
         try:
-            return ImageFont.truetype(name, size=size)
-        except Exception:
-            pass
+            return ImageFont.truetype(candidate, size=size)
+        except OSError:
+            continue
     return ImageFont.load_default()
 
 
@@ -69,12 +41,8 @@ def rounded(draw, box, radius, fill, outline=None, width=1):
     draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
 
 
-def text(draw, xy, value, size, fill, bold=False, max_width=None, line_gap=12):
-    selected = font(size, bold)
-    if not max_width:
-        draw.text(xy, value, fill=fill, font=selected)
-        return draw.textbbox(xy, value, font=selected)[3]
-
+def text_lines(draw, xy, value, size, fill, weight="regular", max_width=1000, gap=12, anchor=None):
+    selected = font(size, weight)
     words = value.split()
     lines = []
     current = ""
@@ -91,157 +59,248 @@ def text(draw, xy, value, size, fill, bold=False, max_width=None, line_gap=12):
 
     y = xy[1]
     for line in lines:
-        draw.text((xy[0], y), line, fill=fill, font=selected)
-        y += size + line_gap
+        x = xy[0]
+        if anchor == "center":
+            x -= draw.textlength(line, font=selected) / 2
+        draw.text((x, y), line, fill=fill, font=selected)
+        y += size + gap
     return y
 
 
-def header(draw, title, subtitle, accent):
-    rounded(draw, (72, 92, 1248, 2780), 52, (248, 250, 251))
-    draw.ellipse((-190, -280, 760, 670), fill=tuple(min(255, int(c * 0.42 + 150)) for c in accent))
-    draw.ellipse((760, 2100, 1570, 2910), fill=tuple(min(255, int(c * 0.35 + 165)) for c in accent))
-    text(draw, (132, 250), title, 78, (12, 17, 22), True, max_width=1056, line_gap=18)
-    text(draw, (132, 470), subtitle, 38, (87, 94, 101), False, max_width=980, line_gap=10)
+def fit_cover(path):
+    img = Image.open(path).convert("RGB")
+    scale = max(SIZE[0] / img.width, SIZE[1] / img.height)
+    resized = img.resize((int(img.width * scale), int(img.height * scale)), Image.Resampling.LANCZOS)
+    left = (resized.width - SIZE[0]) // 2
+    top = (resized.height - SIZE[1]) // 2
+    return resized.crop((left, top, left + SIZE[0], top + SIZE[1]))
 
 
-def draw_orb(draw, cx, cy, radius, accent, active=True):
-    for offset, alpha in [(90, 32), (48, 45), (0, 255)]:
-        fill = tuple(min(255, int(c + (255 - c) * 0.55)) for c in accent) if offset else (255, 255, 255)
-        draw.ellipse((cx - radius - offset, cy - radius - offset, cx + radius + offset, cy + radius + offset), fill=fill)
-    draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=(255, 255, 255), outline=(214, 225, 230), width=3)
-    bar_color = (15, 20, 26)
-    heights = [150, 260, 370, 250, 150] if active else [110, 150, 190, 150, 110]
-    x0 = cx - 150
-    for index, height in enumerate(heights):
-        x = x0 + index * 75
-        rounded(draw, (x, cy - height // 2, x + 30, cy + height // 2), 15, bar_color)
+def dark_gradient(base=None):
+    img = base if base is not None else Image.new("RGB", SIZE, BLACK)
+    overlay = Image.new("RGBA", SIZE, (0, 0, 0, 0))
+    od = ImageDraw.Draw(overlay)
+    for y in range(SIZE[1]):
+        alpha = int(160 * (y / SIZE[1]))
+        od.line((0, y, SIZE[0], y), fill=(0, 0, 0, alpha))
+    img = Image.alpha_composite(img.convert("RGBA"), overlay)
+    vignette = Image.new("L", SIZE, 0)
+    vd = ImageDraw.Draw(vignette)
+    vd.ellipse((-360, 220, 1680, 2840), fill=190)
+    vignette = Image.eval(vignette.filter(ImageFilter.GaussianBlur(90)), lambda p: 255 - p)
+    black = Image.new("RGBA", SIZE, (0, 0, 0, 160))
+    img = Image.composite(black, img, vignette)
+    return img.convert("RGB")
 
 
-def phone_frame(draw, x, y, w, h):
-    rounded(draw, (x, y, x + w, y + h), 60, (16, 21, 27))
-    rounded(draw, (x + 22, y + 24, x + w - 22, y + h - 24), 42, (252, 253, 253))
-    draw.rounded_rectangle((x + w // 2 - 80, y + 42, x + w // 2 + 80, y + 60), radius=9, fill=(33, 39, 47))
+def headline(draw, title, subtitle, y=152, centered=False):
+    x = SIZE[0] // 2 if centered else 92
+    text_lines(draw, (x, y), title, 88, TEXT, "bold", 1080, 16, "center" if centered else None)
+    text_lines(draw, (x, y + 218), subtitle, 40, MUTED, "regular", 1040, 10, "center" if centered else None)
 
 
-def scene_orb(draw, accent):
-    draw_orb(draw, 660, 1220, 280, accent)
-    rounded(draw, (180, 1680, 1140, 1960), 38, (255, 255, 255), (220, 229, 234), 2)
-    text(draw, (240, 1740), "English detected", 34, (89, 97, 105))
-    text(draw, (240, 1810), "Speaking Spanish", 54, (14, 19, 24), True)
-    rounded(draw, (380, 2220, 940, 2370), 44, (15, 20, 26))
-    text(draw, (476, 2264), "Start listening", 42, (255, 255, 255), True)
+def app_badge(draw, y=2620):
+    rounded(draw, (90, y, 520, y + 92), 46, (255, 255, 255, 24), (255, 255, 255, 34), 1)
+    draw.ellipse((120, y + 22, 168, y + 70), fill=WHITE)
+    bars = [(184, 46), (202, 62), (220, 74), (238, 58), (256, 42)]
+    for x, h in bars:
+        rounded(draw, (x, y + 46 - h // 2, x + 8, y + 46 + h // 2), 4, BLACK)
+    draw.text((292, y + 26), "Samantha Translate", font=font(26, "bold"), fill=TEXT)
 
 
-def scene_conversation(draw, accent):
-    phone_frame(draw, 210, 790, 900, 1440)
-    text(draw, (300, 900), "Live Translation", 44, (16, 22, 28), True)
-    bubbles = [
-        ((300, 1040, 930, 1210), "Can you explain your last project?", (238, 244, 247)),
-        ((390, 1280, 1020, 1490), "Puedes explicar tu ultimo proyecto?", (222, 250, 238)),
-        ((300, 1580, 890, 1750), "Claro, I led the mobile release.", (238, 244, 247)),
-        ((390, 1820, 1020, 2030), "Sure. I led the mobile release.", (222, 250, 238)),
-    ]
-    for box, value, fill in bubbles:
-        rounded(draw, box, 34, fill)
-        text(draw, (box[0] + 34, box[1] + 40), value, 34, (16, 22, 28), max_width=box[2] - box[0] - 68)
-    draw_orb(draw, 660, 2320, 140, accent, active=False)
+def mini_orb(canvas, draw, cx, cy, r=150, glow=CYAN):
+    glow_layer = Image.new("RGBA", SIZE, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow_layer)
+    gd.ellipse((cx - r * 2, cy - r * 2, cx + r * 2, cy + r * 2), fill=(*glow, 55))
+    glow_layer = glow_layer.filter(ImageFilter.GaussianBlur(34))
+    merged = canvas.convert("RGBA")
+    merged.alpha_composite(glow_layer)
+    canvas.paste(merged.convert(canvas.mode))
+    draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=WHITE, outline=(217, 223, 230), width=3)
+    draw.ellipse((cx - r * 0.72, cy - r * 0.72, cx + r * 0.72, cy + r * 0.72), outline=(218, 222, 226), width=3)
+    heights = [60, 104, 148, 104, 60]
+    start = cx - 82
+    for i, h in enumerate(heights):
+        x = start + i * 40
+        rounded(draw, (x, cy - h // 2, x + 14, cy + h // 2), 7, (20, 24, 29))
 
 
-def scene_paywall(draw, accent):
-    rounded(draw, (160, 790, 1160, 2200), 44, (255, 255, 255), (220, 229, 234), 2)
-    draw_orb(draw, 660, 1040, 130, accent, active=False)
-    text(draw, (250, 1250), "Samantha Translate Pro", 52, (14, 19, 24), True, max_width=820)
-    rows = [
-        ("3-day free trial", "Then $4.99/week"),
-        ("Native Apple checkout", "Purchase, restore, and cancel with Apple"),
-        ("No API keys", "The app handles access for you"),
-    ]
-    y = 1430
-    for title, subtitle in rows:
-        draw.ellipse((250, y + 8, 304, y + 62), fill=(17, 23, 29))
-        text(draw, (334, y), title, 38, (16, 22, 28), True)
-        text(draw, (334, y + 52), subtitle, 28, (94, 101, 108))
-        y += 165
-    rounded(draw, (250, 1960, 1070, 2100), 38, (15, 20, 26))
-    text(draw, (392, 1998), "Start free trial", 42, (255, 255, 255), True)
+def phone_shell(draw, x, y, w, h, fill=(9, 11, 14)):
+    rounded(draw, (x, y, x + w, y + h), 72, fill, (255, 255, 255, 36), 2)
+    rounded(draw, (x + 24, y + 28, x + w - 24, y + h - 28), 52, (246, 247, 249))
+    rounded(draw, (x + w // 2 - 86, y + 52, x + w // 2 + 86, y + 72), 10, (20, 24, 29))
+    return (x + 52, y + 110, x + w - 52, y + h - 76)
 
 
-def scene_languages(draw, accent):
-    languages = [("English", "EN"), ("Espanol", "ES"), ("Francais", "FR"), ("Chinese", "ZH"), ("Japanese", "JA")]
-    y = 790
-    for index, (name, code) in enumerate(languages):
-        box = (170, y, 1150, y + 210)
-        fill = (255, 255, 255) if index != 1 else (232, 229, 255)
-        rounded(draw, box, 34, fill, (222, 229, 234), 2)
-        rounded(draw, (220, y + 48, 330, y + 158), 34, (16, 22, 28) if index == 1 else (236, 240, 242))
-        text(draw, (248, y + 80), code, 30, (255, 255, 255) if index == 1 else (37, 44, 51), True)
-        text(draw, (380, y + 52), name, 44, (14, 19, 24), True)
-        text(draw, (380, y + 112), "Spoken output language", 28, (92, 99, 106))
-        y += 250
+def pill(draw, box, label, fill, text_fill=TEXT):
+    rounded(draw, box, (box[3] - box[1]) // 2, fill)
+    selected = font(32, "bold")
+    tw = draw.textlength(label, font=selected)
+    draw.text((box[0] + (box[2] - box[0] - tw) / 2, box[1] + 26), label, font=selected, fill=text_fill)
 
 
-def scene_privacy(draw, accent):
-    draw_orb(draw, 660, 930, 170, accent, active=False)
-    items = [
-        ("No audio library", "Voice is processed for translation, not saved by us."),
-        ("No transcript history", "The app does not build a conversation archive."),
-        ("Subscription only", "Apple handles trial, renewal, and cancellation."),
-    ]
-    y = 1300
-    for title, subtitle in items:
-        rounded(draw, (170, y, 1150, y + 240), 34, (255, 255, 255), (222, 229, 234), 2)
-        rounded(draw, (230, y + 62, 334, y + 166), 30, (16, 22, 28))
-        draw.line((258, y + 114, 306, y + 114), fill=(255, 255, 255), width=10)
-        text(draw, (380, y + 58), title, 40, (15, 20, 26), True)
-        text(draw, (380, y + 118), subtitle, 28, (92, 99, 106), max_width=670)
-        y += 295
+def draw_translation_panel(draw, box, dark=False):
+    x1, y1, x2, y2 = box
+    fill = (246, 248, 250) if not dark else (19, 22, 27)
+    stroke = (226, 231, 236) if not dark else (255, 255, 255, 32)
+    primary = (12, 16, 21) if not dark else TEXT
+    secondary = (92, 99, 107) if not dark else MUTED
+    rounded(draw, box, 36, fill, stroke, 2)
+    draw.text((x1 + 46, y1 + 42), "Live subtitles", font=font(30, "bold"), fill=secondary)
+    text_lines(draw, (x1 + 46, y1 + 96), "Could you tell me about your last project?", 40, primary, "bold", x2 - x1 - 92, 10)
+    rounded(draw, (x1 + 46, y1 + 268, x2 - 46, y1 + 470), 28, (225, 252, 240))
+    draw.text((x1 + 84, y1 + 304), "Spoken translation", font=font(28, "bold"), fill=(50, 104, 78))
+    text_lines(draw, (x1 + 84, y1 + 354), "¿Puedes hablarme de tu ultimo proyecto?", 34, (12, 17, 22), "bold", x2 - x1 - 168, 8)
 
 
-def scene_interview(draw, accent):
-    rounded(draw, (150, 790, 1170, 1250), 42, (255, 255, 255), (220, 229, 234), 2)
-    text(draw, (220, 880), "Question heard", 30, (92, 99, 106))
-    text(draw, (220, 945), "Tell us about a time you solved a hard technical problem.", 42, (15, 20, 26), True, max_width=870)
-    rounded(draw, (150, 1370, 1170, 1850), 42, (227, 249, 239), (198, 237, 218), 2)
-    text(draw, (220, 1460), "Spanish meaning", 30, (67, 114, 91))
-    text(draw, (220, 1525), "Cuentanos de una vez que resolviste un problema tecnico dificil.", 42, (15, 20, 26), True, max_width=870)
-    rounded(draw, (150, 1970, 1170, 2220), 42, (255, 255, 255), (220, 229, 234), 2)
-    text(draw, (220, 2045), "Speak back in English", 34, (15, 20, 26), True)
-    text(draw, (220, 2110), "Natural output for fast interview practice.", 30, (92, 99, 106))
+def screen_01():
+    global base
+    base = dark_gradient(fit_cover(SOURCES / "openai-image-v2-voice-orb.png"))
+    draw = ImageDraw.Draw(base, "RGBA")
+    headline(draw, "Real-time voice translation", "Listen in any language. Hear it back in yours.", centered=True)
+    draw_translation_panel(draw, (120, 1750, 1200, 2250), dark=True)
+    app_badge(draw)
+    return base
 
 
-SCENE_DRAWERS = {
-    "orb": scene_orb,
-    "conversation": scene_conversation,
-    "paywall": scene_paywall,
-    "languages": scene_languages,
-    "privacy": scene_privacy,
-    "interview": scene_interview,
-}
+def screen_02():
+    global base
+    base = dark_gradient(fit_cover(SOURCES / "openai-image-v2-interview-orb.png"))
+    draw = ImageDraw.Draw(base, "RGBA")
+    headline(draw, "Built for interviews and travel", "Understand fast speech, then answer clearly.", centered=True)
+    rounded(draw, (118, 1710, 1202, 2280), 42, (255, 255, 255, 235), (255, 255, 255, 60), 2)
+    draw.text((180, 1770), "Question heard", font=font(30, "bold"), fill=(85, 93, 102))
+    text_lines(draw, (180, 1830), "Tell us about a time you solved a hard technical problem.", 44, (13, 18, 24), "bold", 960, 10)
+    rounded(draw, (180, 2050, 1140, 2208), 34, (224, 251, 240))
+    draw.text((222, 2094), "Meaning in Spanish", font=font(28, "bold"), fill=(50, 104, 78))
+    draw.text((222, 2142), "Pregunta traducida en vivo", font=font(40, "bold"), fill=(13, 18, 24))
+    app_badge(draw)
+    return base
 
 
-def make_screen(spec):
-    img = Image.new("RGB", SIZE, (7, 10, 13))
-    draw = ImageDraw.Draw(img)
-    header(draw, spec["title"], spec["subtitle"], spec["accent"])
-    SCENE_DRAWERS[spec["scene"]](draw, spec["accent"])
-    text(draw, (132, 2620), "Samantha Translate", 34, (91, 98, 105), True)
+def screen_03():
+    img = Image.new("RGB", SIZE, (247, 249, 251))
+    draw = ImageDraw.Draw(img, "RGBA")
+    draw.ellipse((-420, -330, 740, 760), fill=(218, 251, 255))
+    draw.ellipse((820, 2260, 1680, 3060), fill=(220, 247, 236))
+    text_lines(draw, (92, 138), "Subtitles plus spoken output", 82, (8, 12, 18), "bold", 1080, 18)
+    text_lines(draw, (92, 358), "Read the meaning while Samantha speaks it aloud.", 38, (86, 94, 104), "regular", 1040, 10)
+    screen = phone_shell(draw, 190, 650, 940, 1610)
+    sx1, sy1, sx2, _ = screen
+    draw.text((sx1, sy1), "Samantha Translate", font=font(38, "bold"), fill=(12, 17, 22))
+    mini_orb(img, draw, 660, sy1 + 360, 150)
+    draw.text((sx1, sy1 + 600), "Listening", font=font(42, "bold"), fill=(12, 17, 22))
+    draw.text((sx1, sy1 + 666), "Output language: English", font=font(28), fill=(91, 99, 108))
+    draw_translation_panel(draw, (sx1, sy1 + 760, sx2, sy1 + 1280))
+    pill(draw, (sx1, sy1 + 1342, sx2, sy1 + 1468), "Stop listening", (12, 15, 20))
+    draw.text((92, 2600), "Samantha Translate", font=font(34, "bold"), fill=(91, 98, 105))
     return img
+
+
+def screen_04():
+    img = Image.new("RGB", SIZE, (8, 10, 13))
+    draw = ImageDraw.Draw(img, "RGBA")
+    draw.ellipse((-280, -180, 720, 700), fill=(48, 74, 76))
+    draw.ellipse((780, 2140, 1650, 3000), fill=(66, 54, 28))
+    headline(draw, "Try Pro for 3 days", "Then US$4.99/week through Apple. Cancel anytime.", centered=True)
+    rounded(draw, (118, 750, 1202, 2250), 54, (245, 247, 250), (255, 255, 255, 45), 2)
+    mini_orb(img, draw, 660, 980, 104, YELLOW)
+    text_lines(draw, (660, 1190), "Native Apple subscription", 58, (12, 17, 22), "bold", 900, 12, "center")
+    rows = [
+        ("3-day free trial", "Eligible new subscribers can try before renewal."),
+        ("Apple manages billing", "Purchase, restore, cancel, and renew through Apple."),
+        ("No API keys", "Users never paste or manage developer credentials."),
+    ]
+    y = 1410
+    for title, subtitle in rows:
+        draw.ellipse((198, y + 8, 260, y + 70), fill=(12, 17, 22))
+        draw.text((216, y + 18), "✓", font=font(34, "bold"), fill=WHITE)
+        draw.text((300, y), title, font=font(38, "bold"), fill=(12, 17, 22))
+        text_lines(draw, (300, y + 54), subtitle, 28, (86, 94, 104), "regular", 760, 6)
+        y += 180
+    pill(draw, (220, 2020, 1100, 2150), "Start free trial", (12, 15, 20))
+    app_badge(draw)
+    return img
+
+
+def screen_05():
+    img = Image.new("RGB", SIZE, (248, 250, 252))
+    draw = ImageDraw.Draw(img, "RGBA")
+    draw.ellipse((-360, -260, 740, 720), fill=(231, 226, 255))
+    draw.ellipse((800, 2220, 1600, 3000), fill=(217, 251, 240))
+    text_lines(draw, (92, 140), "Choose the voice you hear", 84, (8, 12, 18), "bold", 1080, 14)
+    text_lines(draw, (92, 350), "Set the language Samantha speaks back in real time.", 38, (86, 94, 104), "regular", 1040, 8)
+    languages = [("English", "EN", True), ("Spanish", "ES", False), ("French", "FR", False), ("Chinese", "ZH", False), ("Japanese", "JA", False)]
+    y = 720
+    for name, code, active in languages:
+        fill = (16, 19, 24) if active else WHITE
+        stroke = (16, 19, 24) if active else (224, 230, 236)
+        label = WHITE if active else (12, 17, 22)
+        sub = (183, 189, 197) if active else (91, 99, 108)
+        rounded(draw, (120, y, 1200, y + 220), 40, fill, stroke, 2)
+        rounded(draw, (178, y + 54, 290, y + 166), 32, WHITE if active else (234, 238, 242))
+        draw.text((208, y + 88), code, font=font(30, "bold"), fill=(12, 17, 22))
+        draw.text((338, y + 54), name, font=font(48, "bold"), fill=label)
+        draw.text((338, y + 120), "Spoken output language", font=font(30), fill=sub)
+        y += 260
+    draw.text((92, 2600), "Samantha Translate", font=font(34, "bold"), fill=(91, 98, 105))
+    return img
+
+
+def screen_06():
+    img = Image.new("RGB", SIZE, (8, 10, 13))
+    draw = ImageDraw.Draw(img, "RGBA")
+    draw.ellipse((-300, 110, 690, 1130), fill=(18, 50, 58))
+    draw.ellipse((790, 1840, 1660, 2860), fill=(45, 32, 56))
+    headline(draw, "Private by design", "No saved audio. No transcript history. No chat memory.", centered=True)
+    items = [
+        ("No audio library", "Audio is processed for translation, not saved by us."),
+        ("No transcript archive", "The app does not keep conversation history."),
+        ("Subscription data only", "Operational records support access and billing support."),
+    ]
+    y = 820
+    for title, subtitle in items:
+        rounded(draw, (118, y, 1202, y + 360), 44, (255, 255, 255, 236), (255, 255, 255, 50), 2)
+        rounded(draw, (184, y + 92, 304, y + 212), 34, (12, 17, 22))
+        draw.line((220, y + 152, 268, y + 152), fill=WHITE, width=10)
+        draw.text((350, y + 88), title, font=font(44, "bold"), fill=(12, 17, 22))
+        text_lines(draw, (350, y + 154), subtitle, 32, (86, 94, 104), "regular", 760, 8)
+        y += 430
+    app_badge(draw)
+    return img
+
+
+SCREENS = [
+    ("01-real-time-voice.png", "Real-time voice translation", screen_01, "OpenAI Image V2 background: openai-image-v2-voice-orb.png"),
+    ("02-interview-travel.png", "Built for interviews and travel", screen_02, "OpenAI Image V2 background: openai-image-v2-interview-orb.png"),
+    ("03-subtitles-spoken-output.png", "Subtitles plus spoken output", screen_03, "Composed product UI"),
+    ("04-trial-apple-checkout.png", "Try Pro for 3 days", screen_04, "Composed native subscription messaging"),
+    ("05-output-language.png", "Choose the voice you hear", screen_05, "Composed language-control UI"),
+    ("06-private-by-design.png", "Private by design", screen_06, "Composed privacy/trust UI"),
+]
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    lines = [
+    for existing in OUT.glob("*.png"):
+        existing.unlink()
+
+    manifest = [
         "# Screenshot Manifest",
         "",
-        "Device class: iPhone 6.9 portrait",
+        "Device class: APP_IPHONE_67 / iPhone 6.7-6.9 portrait",
         "Pixel size: 1320x2868",
-        "Generated from distinct product states, not repeated templates.",
+        "Primary locale: en-US",
+        "Generated for Samantha Translate App Store Connect product page.",
+        "The first two screenshots use OpenAI Image V2 generated backgrounds integrated with truthful app marketing composition.",
         "",
     ]
-    for spec in SCREENS:
-        make_screen(spec).save(OUT / spec["file"])
-        lines.append(f"- `{spec['file']}` - {spec['title']} - 1320x2868")
-    (OUT / "screenshot-manifest.md").write_text("\n".join(lines) + "\n")
+    for filename, title, builder, source in SCREENS:
+        image = builder()
+        path = OUT / filename
+        image.save(path, optimize=True)
+        manifest.append(f"- `{filename}` - {title} - 1320x2868 - {source}")
+    (OUT / "screenshot-manifest.md").write_text("\n".join(manifest) + "\n")
 
 
 if __name__ == "__main__":
