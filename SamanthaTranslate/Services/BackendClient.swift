@@ -14,12 +14,14 @@ struct RealtimeTokenResponse: Decodable {
     let value: String?
     let clientSecret: ClientSecret?
     let callEndpoint: URL?
+    let webRTCEndpoint: URL?
     let model: String?
 
     enum CodingKeys: String, CodingKey {
         case value
         case clientSecret = "client_secret"
         case callEndpoint = "call_endpoint"
+        case webRTCEndpoint = "webrtc_call_endpoint"
         case model
     }
 
@@ -45,7 +47,13 @@ final class BackendClient {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(RealtimeTokenRequest(entitlement: entitlement, outputLanguage: outputLanguage.realtimeLabel))
+        request.httpBody = try JSONEncoder().encode(
+            RealtimeTokenRequest(
+                entitlement: entitlement,
+                outputLanguage: outputLanguage.realtimeLabel,
+                outputLanguageCode: outputLanguage.realtimeTranslationCode
+            )
+        )
 
         let (data, response) = try await urlSession.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw BackendError.invalidResponse }
@@ -71,6 +79,7 @@ final class BackendClient {
 private struct RealtimeTokenRequest: Encodable {
     let entitlement: EntitlementPayload
     let outputLanguage: String
+    let outputLanguageCode: String
 }
 
 private struct ServerErrorEnvelope: Decodable {

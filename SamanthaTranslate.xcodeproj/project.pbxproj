@@ -16,8 +16,10 @@
 		7D4B7889098CC41673672211 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C977CD7896E25D8BD357D /* BackendClient.swift */; };
 		8DE3369C546ACEF8E5CB0762 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2A1D62ED4BF39910009CDD /* AppTheme.swift */; };
 		916DADA94A33A04F08449BE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 052CE334E8FACBE45FE37855 /* LaunchScreen.storyboard */; };
+		9B96CF12925783826C78102D /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = AD28B1609F2CA4C1FE0B2458 /* WebRTC */; };
 		B45BFB9CC47B5B1D1C9B6B05 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */; };
 		B655DA5293617ACF9330690D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B541BDC25E8F2589AAC035 /* Assets.xcassets */; };
+		BA30A62E78078228A36A7EC0 /* RealtimeWebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54A5ED3604D14C48CCAF70C /* RealtimeWebRTCClient.swift */; };
 		BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */; };
 		D7DA661CFDA046DF393F69CA /* SamanthaTranslateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */; };
 		F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C70E0972F5C47DB5C1139C59 /* Localizable.strings */; };
@@ -40,11 +42,23 @@
 		AC8A96E40F56D2754A65825C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationSession.swift; sourceTree = "<group>"; };
+		D54A5ED3604D14C48CCAF70C /* RealtimeWebRTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeWebRTCClient.swift; sourceTree = "<group>"; };
 		DB12A7FFD74E9B82283C5156 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DF2A1D62ED4BF39910009CDD /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		E2B541BDC25E8F2589AAC035 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAB9947B53B19BB764CD7622 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C0D1349A4E5D053CBCF98F3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B96CF12925783826C78102D /* WebRTC in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1294E15AFAB965EB5AB35FD8 /* Features */ = {
@@ -80,6 +94,7 @@
 			children = (
 				1F6C977CD7896E25D8BD357D /* BackendClient.swift */,
 				13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */,
+				D54A5ED3604D14C48CCAF70C /* RealtimeWebRTCClient.swift */,
 				CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */,
 			);
 			path = Services;
@@ -118,6 +133,7 @@
 			buildPhases = (
 				E2C2771F66C507B9E0C5C76B /* Sources */,
 				3F94D0DE0EEDFE8458CD2585 /* Resources */,
+				C0D1349A4E5D053CBCF98F3D /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -125,6 +141,7 @@
 			);
 			name = SamanthaTranslate;
 			packageProductDependencies = (
+				AD28B1609F2CA4C1FE0B2458 /* WebRTC */,
 			);
 			productName = SamanthaTranslate;
 			productReference = A2DC9CC821923035AA208F95 /* SamanthaTranslate.app */;
@@ -157,6 +174,9 @@
 			);
 			mainGroup = E6BA1405061EF7CD6500B686;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CD2B40146FE4843B19258725 /* XCRemoteSwiftPackageReference "WebRTC" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EC35B06F8C627B90F3C8C174 /* Products */;
 			projectDirPath = "";
@@ -190,6 +210,7 @@
 				BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */,
 				3E731A794C9D21A97E324C47 /* OnboardingView.swift in Sources */,
 				433F70A647778DD1332C715E /* PaywallView.swift in Sources */,
+				BA30A62E78078228A36A7EC0 /* RealtimeWebRTCClient.swift in Sources */,
 				10E4272DCBF2FD8E7FB7D862 /* RootView.swift in Sources */,
 				D7DA661CFDA046DF393F69CA /* SamanthaTranslateApp.swift in Sources */,
 				253241FAB9E00AB452092EFE /* SettingsView.swift in Sources */,
@@ -400,6 +421,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CD2B40146FE4843B19258725 /* XCRemoteSwiftPackageReference "WebRTC" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stasel/WebRTC.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 147.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD28B1609F2CA4C1FE0B2458 /* WebRTC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD2B40146FE4843B19258725 /* XCRemoteSwiftPackageReference "WebRTC" */;
+			productName = WebRTC;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5F3EB35FC72AF616BCAC6C73 /* Project object */;
 }

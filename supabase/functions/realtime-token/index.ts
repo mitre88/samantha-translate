@@ -11,6 +11,7 @@ type EntitlementPayload = {
 type RequestBody = {
   entitlement?: EntitlementPayload;
   outputLanguage?: string;
+  outputLanguageCode?: string;
 };
 
 const PRODUCT_ID = "samantha_translate_weekly";
@@ -51,7 +52,9 @@ Deno.serve(async (request) => {
   if (!allowed) return jsonResponse({ error: "daily_usage_limit_exceeded" }, 429);
 
   const outputLanguage = body.outputLanguage || "English";
-  const tokenResponse = await fetch("https://api.openai.com/v1/realtime/client_secrets", {
+  const outputLanguageCode = body.outputLanguageCode || "en";
+  const model = Deno.env.get("OPENAI_REALTIME_TRANSLATE_MODEL") ?? "gpt-realtime-translate";
+  const tokenResponse = await fetch("https://api.openai.com/v1/realtime/translations/client_secrets", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${openAIKey}`,
@@ -63,16 +66,10 @@ Deno.serve(async (request) => {
         seconds: CLIENT_SECRET_TTL_SECONDS,
       },
       session: {
-        type: "realtime",
-        model: Deno.env.get("OPENAI_REALTIME_MODEL") ?? "gpt-realtime",
-        instructions: `Translate detected speech into ${outputLanguage}. Output only translated speech. Do not store, summarize, or add commentary.`,
+        model,
         audio: {
-          input: {
-            transcription: { model: Deno.env.get("OPENAI_TRANSCRIBE_MODEL") ?? "gpt-4o-mini-transcribe" },
-            noise_reduction: { type: "near_field" },
-          },
           output: {
-            voice: Deno.env.get("OPENAI_REALTIME_VOICE") ?? "marin",
+            language: outputLanguageCode,
           },
         },
       },
@@ -84,8 +81,10 @@ Deno.serve(async (request) => {
 
   return jsonResponse({
     ...data,
-    call_endpoint: "wss://api.openai.com/v1/realtime",
-    model: Deno.env.get("OPENAI_REALTIME_MODEL") ?? "gpt-realtime",
+    output_language: outputLanguage,
+    call_endpoint: "wss://api.openai.com/v1/realtime/translations",
+    webrtc_call_endpoint: "https://api.openai.com/v1/realtime/translations/calls",
+    model,
   });
 });
 

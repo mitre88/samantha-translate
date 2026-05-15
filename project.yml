@@ -9,12 +9,18 @@ settings:
     SWIFT_VERSION: "6.0"
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "11"
+packages:
+  WebRTC:
+    url: https://github.com/stasel/WebRTC.git
+    from: "147.0.0"
 targets:
   SamanthaTranslate:
     type: application
     platform: iOS
     sources:
       - SamanthaTranslate
+    dependencies:
+      - package: WebRTC
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alexmitre.samanthatranslate

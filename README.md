@@ -13,7 +13,7 @@ Premium iOS voice translator with a minimal SwiftUI interface, StoreKit subscrip
 
 ## Structure
 
-- `SamanthaTranslate/` - SwiftUI iOS app
+- `SamanthaTranslate/` - SwiftUI iOS app with native WebRTC Realtime audio
 - `supabase/` - Edge Functions and database migration
 - `web/` - Vercel support/privacy site
 - `AppStore/` - metadata and screenshot output
@@ -38,8 +38,7 @@ Set these in Supabase, never in the iOS app:
 
 ```bash
 supabase secrets set OPENAI_API_KEY=YOUR_OPENAI_API_KEY
-supabase secrets set OPENAI_REALTIME_MODEL=gpt-realtime
-supabase secrets set OPENAI_REALTIME_VOICE=marin
+supabase secrets set OPENAI_REALTIME_TRANSLATE_MODEL=gpt-realtime-translate
 supabase secrets set OPENAI_CLIENT_SECRET_TTL_SECONDS=120
 ```
 

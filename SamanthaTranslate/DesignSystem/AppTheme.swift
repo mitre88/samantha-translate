@@ -50,6 +50,16 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         case .japanese: "Japanese"
         }
     }
+
+    var realtimeTranslationCode: String {
+        switch self {
+        case .english: "en"
+        case .spanish: "es"
+        case .french: "fr"
+        case .chinese: "zh"
+        case .japanese: "ja"
+        }
+    }
 }
 
 struct PrimaryButton: View {
