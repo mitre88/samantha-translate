@@ -1,0 +1,120 @@
+{
+  "identifier" : "6BD4B1B7-DA74-4F2A-B8B5-3CED7A9DB903",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6769848018",
+    "_developerTeamID" : "8UTGJ9D5B6",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "22092826",
+      "localizations" : [
+        {
+          "description" : "Weekly access for Samantha Translate.",
+          "displayName" : "Samantha Translate Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "Samantha Translate Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6769848561",
+          "introductoryOffer" : {
+            "internalID" : "2302F569-13FD-4764-979A-6828E259B1AF",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Live voice translation with a 3-day free trial.",
+              "displayName" : "Samantha Translate Pro",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Traduccion de voz en vivo con 3 dias de prueba gratis.",
+              "displayName" : "Samantha Translate Pro",
+              "locale" : "es_MX"
+            }
+          ],
+          "productID" : "samantha_translate_weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Samantha Translate Weekly",
+          "subscriptionGroupID" : "22092826",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
