@@ -16,64 +16,72 @@ struct TranslatorView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: AppSpacing.xl) {
-                Spacer()
+            ZStack {
+                AppTheme.pageBackground.ignoresSafeArea()
 
-                VoiceOrb(isListening: translationSession.state == .listening)
+                VStack(spacing: AppSpacing.lg) {
+                    Spacer(minLength: AppSpacing.lg)
 
-                VStack(spacing: AppSpacing.xs) {
-                    Text(stateText)
-                        .font(.title2.bold())
-                    Text("translator.subtitle")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
+                    VoiceOrb(isListening: translationSession.state == .listening, size: 132)
 
-                VStack(spacing: AppSpacing.md) {
-                    Picker("settings.output_language", selection: $outputLanguageRaw) {
-                        ForEach(AppLanguage.allCases) { language in
-                            Text(language.displayName).tag(language.rawValue)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .padding()
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
-
-                    if !translationSession.lastTranslation.isEmpty {
-                        Text(translationSession.lastTranslation)
-                            .font(.title3)
+                    VStack(spacing: AppSpacing.xs) {
+                        Text(stateText)
+                            .font(.title3.bold())
                             .multilineTextAlignment(.center)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous))
-                    }
-                }
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.85)
 
-                Spacer()
-
-                switch translationSession.state {
-                case .listening, .preparing:
-                    SecondaryButton(title: "translator.stop", systemImage: "stop.fill") {
-                        translationSession.stop()
+                        Text("translator.subtitle")
+                            .font(.footnote)
+                            .foregroundStyle(AppTheme.muted)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
-                default:
-                    PrimaryButton(title: "translator.start", systemImage: "mic.fill") {
-                        Task {
-                            let selected = AppLanguage(rawValue: outputLanguageRaw) ?? .english
-                            await translationSession.start(outputLanguage: selected)
+
+                    AppSection {
+                        Picker("settings.output_language", selection: $outputLanguageRaw) {
+                            ForEach(AppLanguage.allCases) { language in
+                                Text(language.displayName).tag(language.rawValue)
+                            }
+                        }
+                        .pickerStyle(.menu)
+
+                        if !translationSession.lastTranslation.isEmpty {
+                            Divider()
+                            Text(translationSession.lastTranslation)
+                                .font(.body)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
-                }
 
-                if case .error(let message) = translationSession.state {
-                    Text(message)
-                        .font(.footnote)
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
+                    Spacer(minLength: AppSpacing.lg)
+
+                    switch translationSession.state {
+                    case .listening, .preparing:
+                        SecondaryButton(title: "translator.stop", systemImage: "stop.fill") {
+                            translationSession.stop()
+                        }
+                    default:
+                        PrimaryButton(title: "translator.start", systemImage: "mic.fill") {
+                            Task {
+                                let selected = AppLanguage(rawValue: outputLanguageRaw) ?? .english
+                                await translationSession.start(outputLanguage: selected)
+                            }
+                        }
+                    }
+
+                    if case .error(let message) = translationSession.state {
+                        Text(message)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
+                .padding(AppSpacing.lg)
             }
-            .padding(AppSpacing.lg)
             .navigationTitle("app.name")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -88,4 +96,3 @@ struct TranslatorView: View {
         }
     }
 }
-

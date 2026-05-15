@@ -1,9 +1,11 @@
 import SwiftUI
 
 enum AppSpacing {
+    static let xxs: CGFloat = 4
     static let xs: CGFloat = 8
     static let sm: CGFloat = 12
     static let md: CGFloat = 16
+    static let ml: CGFloat = 20
     static let lg: CGFloat = 24
     static let xl: CGFloat = 32
 }
@@ -12,6 +14,12 @@ enum AppRadius {
     static let sm: CGFloat = 12
     static let md: CGFloat = 18
     static let lg: CGFloat = 28
+}
+
+enum AppTheme {
+    static let pageBackground = Color(.systemGroupedBackground)
+    static let surface = Color(.secondarySystemGroupedBackground)
+    static let muted = Color.secondary
 }
 
 enum AppLanguage: String, CaseIterable, Identifiable {
@@ -52,13 +60,15 @@ struct PrimaryButton: View {
     var body: some View {
         Button(action: action) {
             Label(title, systemImage: systemImage ?? "arrow.right")
-                .font(.headline)
+                .font(.body.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.82)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .frame(height: 56)
         }
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
-        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+        .clipShape(Capsule(style: .continuous))
     }
 }
 
@@ -70,12 +80,27 @@ struct SecondaryButton: View {
     var body: some View {
         Button(action: action) {
             Label(title, systemImage: systemImage ?? "arrow.clockwise")
-                .font(.headline)
+                .font(.body.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.82)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+                .frame(height: 52)
         }
         .buttonStyle(.bordered)
         .controlSize(.large)
+        .clipShape(Capsule(style: .continuous))
     }
 }
 
+struct AppSection<Content: View>: View {
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            content
+        }
+        .padding(AppSpacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppTheme.surface, in: RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+    }
+}

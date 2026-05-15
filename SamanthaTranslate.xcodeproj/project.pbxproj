@@ -15,6 +15,7 @@
 		6A487DB7E004029DBCA00CC9 /* TranslationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */; };
 		7D4B7889098CC41673672211 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C977CD7896E25D8BD357D /* BackendClient.swift */; };
 		8DE3369C546ACEF8E5CB0762 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2A1D62ED4BF39910009CDD /* AppTheme.swift */; };
+		916DADA94A33A04F08449BE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 052CE334E8FACBE45FE37855 /* LaunchScreen.storyboard */; };
 		B45BFB9CC47B5B1D1C9B6B05 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */; };
 		B655DA5293617ACF9330690D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B541BDC25E8F2589AAC035 /* Assets.xcassets */; };
 		BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		052CE334E8FACBE45FE37855 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08D2164CF75B3F47838CFCC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementStore.swift; sourceTree = "<group>"; };
 		1F6C977CD7896E25D8BD357D /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			children = (
 				E2B541BDC25E8F2589AAC035 /* Assets.xcassets */,
 				3C03BD626FFE8A8C71C14EBE /* Info.plist */,
+				052CE334E8FACBE45FE37855 /* LaunchScreen.storyboard */,
 				5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */,
 				F026BB1BED0807EC9CD18B13 /* DesignSystem */,
 				1294E15AFAB965EB5AB35FD8 /* Features */,
@@ -170,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B655DA5293617ACF9330690D /* Assets.xcassets in Resources */,
+				916DADA94A33A04F08449BE1 /* LaunchScreen.storyboard in Resources */,
 				F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,7 +251,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -349,7 +353,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
 				ENABLE_NS_ASSERTIONS = NO;

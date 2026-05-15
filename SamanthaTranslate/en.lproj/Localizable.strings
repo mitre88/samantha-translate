@@ -6,8 +6,8 @@
 "language.french" = "French";
 "language.chinese" = "Chinese";
 "language.japanese" = "Japanese";
-"onboarding.title" = "Hear any language. Speak yours.";
-"onboarding.body" = "Samantha listens to speech and repeats the meaning in your selected language.";
+"onboarding.title" = "Translate live conversations";
+"onboarding.body" = "Hear any language and speak the translation in the language you choose.";
 "onboarding.feature.detect" = "Auto-detect speech";
 "onboarding.feature.detect.body" = "No source-language setup before a conversation.";
 "onboarding.feature.speak" = "Spoken translation";
@@ -38,4 +38,3 @@
 "settings.privacy.note" = "Samantha Translate does not save audio or transcripts.";
 "settings.privacy.link" = "Privacy Policy";
 "settings.support.link" = "Support";
-

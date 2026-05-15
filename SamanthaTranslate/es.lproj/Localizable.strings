@@ -6,14 +6,14 @@
 "language.french" = "Francés";
 "language.chinese" = "Chino";
 "language.japanese" = "Japonés";
-"onboarding.title" = "Escucha cualquier idioma. Habla el tuyo.";
-"onboarding.body" = "Samantha escucha voz y repite el significado en el idioma que elijas.";
-"onboarding.feature.detect" = "Detecta el idioma";
-"onboarding.feature.detect.body" = "No tienes que configurar el idioma de origen antes de conversar.";
+"onboarding.title" = "Traduce conversaciones en vivo";
+"onboarding.body" = "Escucha cualquier idioma y responde con voz en el idioma que elijas.";
+"onboarding.feature.detect" = "Detección automática";
+"onboarding.feature.detect.body" = "No configures el idioma de origen antes de conversar.";
 "onboarding.feature.speak" = "Traducción hablada";
 "onboarding.feature.speak.body" = "Diseñada para escuchar en tiempo real, no para guardar transcripciones.";
 "onboarding.feature.private" = "Sin audio guardado";
-"onboarding.feature.private.body" = "El audio se procesa en vivo para traducir y no lo guardamos.";
+"onboarding.feature.private.body" = "Procesamos la voz en vivo para traducir. No guardamos audio.";
 "onboarding.continue" = "Continuar";
 "paywall.title" = "Empieza con 3 días gratis";
 "paywall.subtitle" = "Después US$4.99 por semana. Cancela cuando quieras desde Apple.";
@@ -38,4 +38,3 @@
 "settings.privacy.note" = "Samantha Translate no guarda audio ni transcripciones.";
 "settings.privacy.link" = "Política de privacidad";
 "settings.support.link" = "Soporte";
-

@@ -6,8 +6,8 @@
 "language.french" = "フランス語";
 "language.chinese" = "中国語";
 "language.japanese" = "日本語";
-"onboarding.title" = "どんな言語も聞いて、自分の言語で話す。";
-"onboarding.body" = "Samantha は音声を聞き取り、選んだ言語で意味を話します。";
+"onboarding.title" = "会話をリアルタイム翻訳";
+"onboarding.body" = "どんな言語も聞き取り、選んだ言語で音声翻訳します。";
 "onboarding.feature.detect" = "音声を自動検出";
 "onboarding.feature.detect.body" = "会話前に入力言語を設定する必要はありません。";
 "onboarding.feature.speak" = "音声で翻訳";

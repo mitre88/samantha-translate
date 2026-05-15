@@ -6,8 +6,8 @@
 "language.french" = "法语";
 "language.chinese" = "中文";
 "language.japanese" = "日语";
-"onboarding.title" = "听懂任何语言，说出你的语言。";
-"onboarding.body" = "Samantha 会聆听语音，并用你选择的语言说出含义。";
+"onboarding.title" = "实时翻译对话";
+"onboarding.body" = "听懂任何语言，并用你选择的语言朗读翻译。";
 "onboarding.feature.detect" = "自动识别语音";
 "onboarding.feature.detect.body" = "对话前无需设置源语言。";
 "onboarding.feature.speak" = "语音翻译";
@@ -38,4 +38,3 @@
 "settings.privacy.note" = "Samantha Translate 不保存音频或转写。";
 "settings.privacy.link" = "隐私政策";
 "settings.support.link" = "支持";
-

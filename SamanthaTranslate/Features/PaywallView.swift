@@ -4,50 +4,61 @@ struct PaywallView: View {
     @EnvironmentObject private var entitlementStore: EntitlementStore
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: AppSpacing.xl) {
-                VoiceOrb(isListening: false, size: 150)
-                    .padding(.top, AppSpacing.lg)
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: AppSpacing.lg) {
+                    VoiceOrb(isListening: false, size: 96)
+                        .padding(.top, AppSpacing.lg)
 
-                VStack(spacing: AppSpacing.sm) {
-                    Text("paywall.title")
-                        .font(.largeTitle.bold())
-                        .multilineTextAlignment(.center)
-                    Text("paywall.subtitle")
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
+                    VStack(spacing: AppSpacing.sm) {
+                        Text("paywall.title")
+                            .font(.title2.bold())
+                            .multilineTextAlignment(.center)
+                            .lineLimit(3)
+                            .minimumScaleFactor(0.82)
+                            .fixedSize(horizontal: false, vertical: true)
 
-                VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    PaywallLine(icon: "checkmark.seal", text: "paywall.line.trial")
-                    PaywallLine(icon: "speaker.wave.3", text: "paywall.line.realtime")
-                    PaywallLine(icon: "lock", text: "paywall.line.privacy")
-                }
-                .padding(AppSpacing.lg)
-                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous))
-
-                VStack(spacing: AppSpacing.sm) {
-                    PrimaryButton(title: "paywall.start_trial", systemImage: "sparkles") {
-                        Task { await entitlementStore.purchaseWeekly() }
+                        Text("paywall.subtitle")
+                            .font(.footnote)
+                            .foregroundStyle(AppTheme.muted)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    SecondaryButton(title: "paywall.restore", systemImage: "arrow.clockwise") {
-                        Task { await entitlementStore.restore() }
-                    }
-                    Text("paywall.disclaimer")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
 
-                if let error = entitlementStore.errorMessage {
-                    Text(error)
-                        .font(.footnote)
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
+                    AppSection {
+                        PaywallLine(icon: "checkmark.seal.fill", text: "paywall.line.trial")
+                        PaywallLine(icon: "speaker.wave.3.fill", text: "paywall.line.realtime")
+                        PaywallLine(icon: "lock.fill", text: "paywall.line.privacy")
+                    }
+
+                    VStack(spacing: AppSpacing.sm) {
+                        PrimaryButton(title: "paywall.start_trial", systemImage: "sparkles") {
+                            Task { await entitlementStore.purchaseWeekly() }
+                        }
+                        SecondaryButton(title: "paywall.restore", systemImage: "arrow.clockwise") {
+                            Task { await entitlementStore.restore() }
+                        }
+                        Text("paywall.disclaimer")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.muted)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    if let error = entitlementStore.errorMessage {
+                        Text(error)
+                            .font(.footnote)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.bottom, AppSpacing.xl)
             }
-            .padding(AppSpacing.lg)
+            .background(AppTheme.pageBackground.ignoresSafeArea())
+            .navigationTitle("app.name")
+            .navigationBarTitleDisplayMode(.inline)
         }
         .task { await entitlementStore.refresh() }
     }
@@ -61,6 +72,6 @@ struct PaywallLine: View {
         Label(text, systemImage: icon)
             .font(.subheadline.weight(.medium))
             .foregroundStyle(.primary)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
-

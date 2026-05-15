@@ -5,33 +5,47 @@ struct OnboardingView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: AppSpacing.xl) {
-                Spacer()
-                VoiceOrb(isListening: true)
+            ZStack {
+                AppTheme.pageBackground.ignoresSafeArea()
 
-                VStack(spacing: AppSpacing.sm) {
-                    Text("onboarding.title")
-                        .font(.largeTitle.bold())
-                        .multilineTextAlignment(.center)
-                    Text("onboarding.body")
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
+                VStack(spacing: AppSpacing.lg) {
+                    Spacer(minLength: AppSpacing.md)
+                    HeaderBlock()
+                    Spacer(minLength: AppSpacing.md)
+                    PrimaryButton(title: "onboarding.continue", systemImage: "arrow.right", action: onContinue)
                 }
-
-                VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    FeatureRow(icon: "sparkles", title: "onboarding.feature.detect", detail: "onboarding.feature.detect.body")
-                    FeatureRow(icon: "speaker.wave.2", title: "onboarding.feature.speak", detail: "onboarding.feature.speak.body")
-                    FeatureRow(icon: "lock.shield", title: "onboarding.feature.private", detail: "onboarding.feature.private.body")
-                }
-
-                Spacer()
-                PrimaryButton(title: "onboarding.continue", systemImage: "arrow.right", action: onContinue)
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.vertical, AppSpacing.lg)
             }
-            .padding(AppSpacing.lg)
             .navigationTitle("")
             .toolbar(.hidden, for: .navigationBar)
         }
+    }
+}
+
+private struct HeaderBlock: View {
+    var body: some View {
+        VStack(spacing: AppSpacing.md) {
+            VoiceOrb(isListening: true, size: 112)
+                .padding(.bottom, AppSpacing.xs)
+
+            VStack(spacing: AppSpacing.sm) {
+                Text("onboarding.title")
+                    .font(.title2.bold())
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.82)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("onboarding.body")
+                    .font(.footnote)
+                    .foregroundStyle(AppTheme.muted)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -41,15 +55,28 @@ struct FeatureRow: View {
     let detail: LocalizedStringKey
 
     var body: some View {
-        HStack(alignment: .top, spacing: AppSpacing.md) {
+        HStack(alignment: .top, spacing: AppSpacing.sm) {
             Image(systemName: icon)
-                .font(.headline)
+                .font(.footnote.weight(.semibold))
+                .foregroundStyle(.primary)
                 .frame(width: 34, height: 34)
                 .background(.thinMaterial, in: Circle())
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title).font(.headline)
-                Text(detail).font(.subheadline).foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                Text(title)
+                    .font(.footnote.weight(.semibold))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(detail)
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.muted)
+                    .lineSpacing(1.5)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
