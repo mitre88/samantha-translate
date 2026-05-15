@@ -82,6 +82,31 @@ struct PrimaryButton: View {
     }
 }
 
+struct DarkPrimaryButton: View {
+    let title: LocalizedStringKey
+    var systemImage: String? = nil
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label(title, systemImage: systemImage ?? "arrow.right")
+                .font(.body.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.82)
+                .foregroundStyle(Color(white: 0.72))
+                .frame(maxWidth: .infinity)
+                .frame(height: 56)
+                .background(Color.black, in: Capsule(style: .continuous))
+                .overlay(
+                    Capsule(style: .continuous)
+                        .strokeBorder(Color.white.opacity(0.10), lineWidth: 1)
+                )
+        }
+        .buttonStyle(.plain)
+        .contentShape(Capsule(style: .continuous))
+    }
+}
+
 struct SecondaryButton: View {
     let title: LocalizedStringKey
     var systemImage: String? = nil

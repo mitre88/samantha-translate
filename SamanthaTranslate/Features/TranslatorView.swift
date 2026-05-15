@@ -155,7 +155,7 @@ struct TranslatorView: View {
                     translationSession.stop()
                 }
             default:
-                PrimaryButton(title: "translator.start", systemImage: "mic.fill") {
+                DarkPrimaryButton(title: "translator.start", systemImage: "mic.fill") {
                     Task {
                         let selected = AppLanguage(rawValue: outputLanguageRaw) ?? .english
                         await translationSession.start(outputLanguage: selected)
