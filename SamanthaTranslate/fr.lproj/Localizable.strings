@@ -31,6 +31,10 @@
 "translator.state.listening" = "Écoute";
 "translator.state.error" = "Attention requise";
 "translator.subtitle" = "Parlez naturellement. Samantha répondra dans la langue choisie.";
+"translator.transcript.title" = "Transcription en direct";
+"translator.transcript.empty" = "Votre parole source et la traduction apparaîtront ici pendant l’écoute.";
+"translator.transcript.source" = "Original";
+"translator.transcript.translation" = "Traduction";
 "translator.start" = "Commencer l’écoute";
 "translator.stop" = "Arrêter";
 "settings.title" = "Réglages";

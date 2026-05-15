@@ -28,9 +28,8 @@ struct RootView: View {
         }
         .animation(.smooth(duration: 0.35), value: showSplash)
         .task {
-            try? await Task.sleep(for: .seconds(1.2))
+            try? await Task.sleep(for: .seconds(1.5))
             showSplash = false
         }
     }
 }
-

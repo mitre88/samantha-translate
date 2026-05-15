@@ -31,6 +31,10 @@
 "translator.state.listening" = "Listening";
 "translator.state.error" = "Needs attention";
 "translator.subtitle" = "Speak naturally. Samantha will answer in your selected language.";
+"translator.transcript.title" = "Live transcript";
+"translator.transcript.empty" = "Your source speech and translated text will appear here while Samantha listens.";
+"translator.transcript.source" = "Original";
+"translator.transcript.translation" = "Translation";
 "translator.start" = "Start listening";
 "translator.stop" = "Stop";
 "settings.title" = "Settings";

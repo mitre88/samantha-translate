@@ -5,6 +5,8 @@ struct TranslatorView: View {
     @AppStorage("outputLanguage") private var outputLanguageRaw = AppLanguage.english.rawValue
     let outputLanguage: AppLanguage
 
+    private let transcriptBottomID = "transcript-bottom"
+
     private var stateText: LocalizedStringKey {
         switch translationSession.state {
         case .idle: "translator.state.idle"
@@ -19,71 +21,41 @@ struct TranslatorView: View {
             ZStack {
                 AppTheme.pageBackground.ignoresSafeArea()
 
-                VStack(spacing: AppSpacing.lg) {
-                    Spacer(minLength: AppSpacing.lg)
+                ScrollViewReader { proxy in
+                    ScrollView(.vertical, showsIndicators: true) {
+                        VStack(spacing: AppSpacing.lg) {
+                            VoiceOrb(isListening: translationSession.state == .listening, size: 116)
+                                .padding(.top, AppSpacing.md)
 
-                    VoiceOrb(isListening: translationSession.state == .listening, size: 132)
+                            statusBlock
+                            languagePicker
+                            transcriptPanel
 
-                    VStack(spacing: AppSpacing.xs) {
-                        Text(stateText)
-                            .font(.title3.bold())
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.85)
-
-                        Text("translator.subtitle")
-                            .font(.footnote)
-                            .foregroundStyle(AppTheme.muted)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(2)
-                            .fixedSize(horizontal: false, vertical: true)
+                            Color.clear
+                                .frame(height: 1)
+                                .id(transcriptBottomID)
+                        }
+                        .padding(.horizontal, AppSpacing.lg)
+                        .padding(.bottom, AppSpacing.xl)
                     }
-
-                    AppSection {
-                        Picker("settings.output_language", selection: $outputLanguageRaw) {
-                            ForEach(AppLanguage.allCases) { language in
-                                Text(language.displayName).tag(language.rawValue)
-                            }
-                        }
-                        .pickerStyle(.menu)
-
-                        if !translationSession.lastTranslation.isEmpty {
-                            Divider()
-                            Text(translationSession.lastTranslation)
-                                .font(.body)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+                    .scrollBounceBehavior(.basedOnSize)
+                    .onChange(of: translationSession.lastTranscript) { _, _ in
+                        scrollToLatest(using: proxy)
                     }
-
-                    Spacer(minLength: AppSpacing.lg)
-
-                    switch translationSession.state {
-                    case .listening, .preparing:
-                        SecondaryButton(title: "translator.stop", systemImage: "stop.fill") {
-                            translationSession.stop()
-                        }
-                    default:
-                        PrimaryButton(title: "translator.start", systemImage: "mic.fill") {
-                            Task {
-                                let selected = AppLanguage(rawValue: outputLanguageRaw) ?? .english
-                                await translationSession.start(outputLanguage: selected)
-                            }
-                        }
-                    }
-
-                    if case .error(let message) = translationSession.state {
-                        Text(message)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
+                    .onChange(of: translationSession.lastTranslation) { _, _ in
+                        scrollToLatest(using: proxy)
                     }
                 }
-                .padding(AppSpacing.lg)
             }
-            .navigationTitle("app.name")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("app.name")
+                        .font(.headline.weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         SettingsView()
@@ -97,6 +69,146 @@ struct TranslatorView: View {
                 guard let language = AppLanguage(rawValue: newValue) else { return }
                 translationSession.updateOutputLanguage(language)
             }
+            .safeAreaInset(edge: .bottom) {
+                bottomControls
+            }
         }
+    }
+
+    private var statusBlock: some View {
+        VStack(spacing: AppSpacing.xs) {
+            Text(stateText)
+                .font(.title3.bold())
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+
+            Text("translator.subtitle")
+                .font(.footnote)
+                .foregroundStyle(AppTheme.muted)
+                .multilineTextAlignment(.center)
+                .lineSpacing(2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var languagePicker: some View {
+        AppSection {
+            HStack(spacing: AppSpacing.md) {
+                Label("settings.output_language", systemImage: "globe")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+
+                Spacer(minLength: AppSpacing.sm)
+
+                Picker("settings.output_language", selection: $outputLanguageRaw) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayName).tag(language.rawValue)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+            }
+        }
+    }
+
+    private var transcriptPanel: some View {
+        AppSection {
+            VStack(alignment: .leading, spacing: AppSpacing.md) {
+                Text("translator.transcript.title")
+                    .font(.headline)
+
+                if translationSession.lastTranscript.isEmpty && translationSession.lastTranslation.isEmpty {
+                    Text("translator.transcript.empty")
+                        .font(.callout)
+                        .foregroundStyle(AppTheme.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, AppSpacing.xs)
+                } else {
+                    if !translationSession.lastTranscript.isEmpty {
+                        TranscriptBlock(
+                            title: "translator.transcript.source",
+                            text: translationSession.lastTranscript,
+                            isPrimary: false
+                        )
+                    }
+
+                    if !translationSession.lastTranslation.isEmpty {
+                        TranscriptBlock(
+                            title: "translator.transcript.translation",
+                            text: translationSession.lastTranslation,
+                            isPrimary: true
+                        )
+                    }
+                }
+            }
+        }
+        .textSelection(.enabled)
+    }
+
+    private var bottomControls: some View {
+        VStack(spacing: AppSpacing.sm) {
+            switch translationSession.state {
+            case .listening, .preparing:
+                SecondaryButton(title: "translator.stop", systemImage: "stop.fill") {
+                    translationSession.stop()
+                }
+            default:
+                PrimaryButton(title: "translator.start", systemImage: "mic.fill") {
+                    Task {
+                        let selected = AppLanguage(rawValue: outputLanguageRaw) ?? .english
+                        await translationSession.start(outputLanguage: selected)
+                    }
+                }
+            }
+
+            if case .error(let message) = translationSession.state {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.horizontal, AppSpacing.lg)
+        .padding(.top, AppSpacing.md)
+        .padding(.bottom, AppSpacing.sm)
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+    }
+
+    private func scrollToLatest(using proxy: ScrollViewProxy) {
+        guard !translationSession.lastTranscript.isEmpty || !translationSession.lastTranslation.isEmpty else { return }
+        withAnimation(.smooth(duration: 0.25)) {
+            proxy.scrollTo(transcriptBottomID, anchor: .bottom)
+        }
+    }
+}
+
+private struct TranscriptBlock: View {
+    let title: LocalizedStringKey
+    let text: String
+    let isPrimary: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.xs) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.muted)
+                .textCase(.uppercase)
+
+            Text(text)
+                .font(isPrimary ? .body.weight(.medium) : .callout)
+                .foregroundStyle(isPrimary ? .primary : AppTheme.muted)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(AppSpacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.sm, style: .continuous)
+                .fill(isPrimary ? Color.accentColor.opacity(0.12) : Color(.tertiarySystemGroupedBackground))
+        )
     }
 }

@@ -31,6 +31,10 @@
 "translator.state.listening" = "聞き取り中";
 "translator.state.error" = "確認が必要です";
 "translator.subtitle" = "自然に話してください。Samantha が選択した言語で返答します。";
+"translator.transcript.title" = "ライブ文字起こし";
+"translator.transcript.empty" = "Samantha が聞き取っている間、元の音声と翻訳がここに表示されます。";
+"translator.transcript.source" = "原文";
+"translator.transcript.translation" = "翻訳";
 "translator.start" = "聞き取り開始";
 "translator.stop" = "停止";
 "settings.title" = "設定";
