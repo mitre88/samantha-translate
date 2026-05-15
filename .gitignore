@@ -13,3 +13,4 @@ web/node_modules/
 web/dist/
 supabase/.branches/
 supabase/.temp/
+profiles/

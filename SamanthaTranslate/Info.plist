@@ -6,17 +6,25 @@
   <string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Samantha Translate</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
   <key>CFBundleVersion</key>
   <string>$(CURRENT_PROJECT_VERSION)</string>
   <key>LSRequiresIPhoneOS</key>
   <true/>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>Samantha Translate uses the microphone to translate speech in real time. Audio is not saved.</string>
-  <key>UIApplicationSceneManifest</key>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Samantha Translate uses the microphone to translate speech in real time. Audio is not saved.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UIApplicationSceneManifest</key>
   <dict>
     <key>UIApplicationSupportsMultipleScenes</key>
     <false/>
