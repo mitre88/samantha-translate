@@ -1,0 +1,401 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		10E4272DCBF2FD8E7FB7D862 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E23E3EC7232416DDD1A8DA /* RootView.swift */; };
+		253241FAB9E00AB452092EFE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8A96E40F56D2754A65825C /* SettingsView.swift */; };
+		3E731A794C9D21A97E324C47 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB9947B53B19BB764CD7622 /* OnboardingView.swift */; };
+		433F70A647778DD1332C715E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548B0F822590195EF9DAEB4D /* PaywallView.swift */; };
+		58622269647C1375A73E9801 /* TranslatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091779E34B1D32E39E71E89 /* TranslatorView.swift */; };
+		6A487DB7E004029DBCA00CC9 /* TranslationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */; };
+		7D4B7889098CC41673672211 /* BackendClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6C977CD7896E25D8BD357D /* BackendClient.swift */; };
+		8DE3369C546ACEF8E5CB0762 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2A1D62ED4BF39910009CDD /* AppTheme.swift */; };
+		B45BFB9CC47B5B1D1C9B6B05 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */; };
+		B655DA5293617ACF9330690D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2B541BDC25E8F2589AAC035 /* Assets.xcassets */; };
+		BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */; };
+		D7DA661CFDA046DF393F69CA /* SamanthaTranslateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */; };
+		F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C70E0972F5C47DB5C1139C59 /* Localizable.strings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		08D2164CF75B3F47838CFCC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementStore.swift; sourceTree = "<group>"; };
+		1F6C977CD7896E25D8BD357D /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
+		3C03BD626FFE8A8C71C14EBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		50643992C170F035C6162CFC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		548B0F822590195EF9DAEB4D /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamanthaTranslateApp.swift; sourceTree = "<group>"; };
+		6091779E34B1D32E39E71E89 /* TranslatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslatorView.swift; sourceTree = "<group>"; };
+		6E0C35E87ACB1DBC41B18478 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		78E23E3EC7232416DDD1A8DA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		858E98F8C9B6D67703206957 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A2DC9CC821923035AA208F95 /* SamanthaTranslate.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SamanthaTranslate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC8A96E40F56D2754A65825C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationSession.swift; sourceTree = "<group>"; };
+		DB12A7FFD74E9B82283C5156 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DF2A1D62ED4BF39910009CDD /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		E2B541BDC25E8F2589AAC035 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EAB9947B53B19BB764CD7622 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1294E15AFAB965EB5AB35FD8 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				EAB9947B53B19BB764CD7622 /* OnboardingView.swift */,
+				548B0F822590195EF9DAEB4D /* PaywallView.swift */,
+				78E23E3EC7232416DDD1A8DA /* RootView.swift */,
+				AC8A96E40F56D2754A65825C /* SettingsView.swift */,
+				C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */,
+				6091779E34B1D32E39E71E89 /* TranslatorView.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		7A55C74F6895EF6CE8B24DD7 /* SamanthaTranslate */ = {
+			isa = PBXGroup;
+			children = (
+				E2B541BDC25E8F2589AAC035 /* Assets.xcassets */,
+				3C03BD626FFE8A8C71C14EBE /* Info.plist */,
+				5C458FB4F99A7A0D6F3BD1FF /* SamanthaTranslateApp.swift */,
+				F026BB1BED0807EC9CD18B13 /* DesignSystem */,
+				1294E15AFAB965EB5AB35FD8 /* Features */,
+				C70E0972F5C47DB5C1139C59 /* Localizable.strings */,
+				B7C224124EFF02FB0073FA02 /* Services */,
+			);
+			path = SamanthaTranslate;
+			sourceTree = "<group>";
+		};
+		B7C224124EFF02FB0073FA02 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1F6C977CD7896E25D8BD357D /* BackendClient.swift */,
+				13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */,
+				CA147F6CE02A41C067C8DE06 /* TranslationSession.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E6BA1405061EF7CD6500B686 = {
+			isa = PBXGroup;
+			children = (
+				7A55C74F6895EF6CE8B24DD7 /* SamanthaTranslate */,
+				EC35B06F8C627B90F3C8C174 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EC35B06F8C627B90F3C8C174 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2DC9CC821923035AA208F95 /* SamanthaTranslate.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F026BB1BED0807EC9CD18B13 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				DF2A1D62ED4BF39910009CDD /* AppTheme.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2E05F22FB208FF5FB93A4315 /* SamanthaTranslate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2740C174A95A72983A581CA1 /* Build configuration list for PBXNativeTarget "SamanthaTranslate" */;
+			buildPhases = (
+				E2C2771F66C507B9E0C5C76B /* Sources */,
+				3F94D0DE0EEDFE8458CD2585 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SamanthaTranslate;
+			packageProductDependencies = (
+			);
+			productName = SamanthaTranslate;
+			productReference = A2DC9CC821923035AA208F95 /* SamanthaTranslate.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5F3EB35FC72AF616BCAC6C73 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					2E05F22FB208FF5FB93A4315 = {
+						DevelopmentTeam = 8UTGJ9D5B6;
+					};
+				};
+			};
+			buildConfigurationList = AA02E2D99AD9555246E66BC0 /* Build configuration list for PBXProject "SamanthaTranslate" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+				es,
+				fr,
+				ja,
+				"zh-Hans",
+			);
+			mainGroup = E6BA1405061EF7CD6500B686;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EC35B06F8C627B90F3C8C174 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2E05F22FB208FF5FB93A4315 /* SamanthaTranslate */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3F94D0DE0EEDFE8458CD2585 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B655DA5293617ACF9330690D /* Assets.xcassets in Resources */,
+				F1C893DACE8138BC43BD3A42 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E2C2771F66C507B9E0C5C76B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DE3369C546ACEF8E5CB0762 /* AppTheme.swift in Sources */,
+				7D4B7889098CC41673672211 /* BackendClient.swift in Sources */,
+				BDFB778ACCFF7FCBF414A9B2 /* EntitlementStore.swift in Sources */,
+				3E731A794C9D21A97E324C47 /* OnboardingView.swift in Sources */,
+				433F70A647778DD1332C715E /* PaywallView.swift in Sources */,
+				10E4272DCBF2FD8E7FB7D862 /* RootView.swift in Sources */,
+				D7DA661CFDA046DF393F69CA /* SamanthaTranslateApp.swift in Sources */,
+				253241FAB9E00AB452092EFE /* SettingsView.swift in Sources */,
+				B45BFB9CC47B5B1D1C9B6B05 /* SplashView.swift in Sources */,
+				6A487DB7E004029DBCA00CC9 /* TranslationSession.swift in Sources */,
+				58622269647C1375A73E9801 /* TranslatorView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C70E0972F5C47DB5C1139C59 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				50643992C170F035C6162CFC /* en */,
+				DB12A7FFD74E9B82283C5156 /* es */,
+				858E98F8C9B6D67703206957 /* fr */,
+				08D2164CF75B3F47838CFCC5 /* ja */,
+				6E0C35E87ACB1DBC41B18478 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7D1BAA2147E38DED3821C116 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		C06B1E882BEC3067AD78AC02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = SamanthaTranslate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexmitre.samanthatranslate;
+				PRODUCT_NAME = "Samantha Translate";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DFF1B68B19D76445EDF773E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = SamanthaTranslate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alexmitre.samanthatranslate;
+				PRODUCT_NAME = "Samantha Translate";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FB053DCF22D0D6B55CBEDF6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8UTGJ9D5B6;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2740C174A95A72983A581CA1 /* Build configuration list for PBXNativeTarget "SamanthaTranslate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C06B1E882BEC3067AD78AC02 /* Debug */,
+				DFF1B68B19D76445EDF773E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AA02E2D99AD9555246E66BC0 /* Build configuration list for PBXProject "SamanthaTranslate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D1BAA2147E38DED3821C116 /* Debug */,
+				FB053DCF22D0D6B55CBEDF6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5F3EB35FC72AF616BCAC6C73 /* Project object */;
+}

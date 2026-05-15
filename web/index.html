@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Samantha Translate support, privacy, terms, and data handling." />
+    <title>Samantha Translate Support</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <a href="#home" class="brand"><span class="mark"></span>Samantha Translate</a>
+      <nav>
+        <a href="#support">Support</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="#data">Data</a>
+        <a href="#languages">Languages</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="orb" aria-hidden="true"></div>
+        <p class="eyebrow">Real-time speech translation</p>
+        <h1>Hear any language. Listen in yours.</h1>
+        <p class="lead">
+          Samantha Translate listens to speech, detects the source language, and speaks the translation in the language selected by the user.
+        </p>
+        <div class="meta">
+          <span>3-day free trial</span>
+          <span>$4.99/week after trial</span>
+          <span>No saved audio</span>
+        </div>
+      </section>
+
+      <section id="support" class="band">
+        <h2>Support</h2>
+        <p>
+          For help with Samantha Translate, email <a href="mailto:support@nextechia.com">support@nextechia.com</a>.
+          Include your device model, iOS version, and a short description of the issue.
+        </p>
+        <ul>
+          <li>Restore purchases from the app Settings screen.</li>
+          <li>Cancel or manage your subscription in Apple Subscriptions.</li>
+          <li>Microphone access is required for real-time translation.</li>
+        </ul>
+      </section>
+
+      <section id="privacy" class="band">
+        <h2>Privacy Policy</h2>
+        <p>
+          Samantha Translate processes microphone audio in real time to provide speech translation. We do not store audio recordings,
+          speech transcripts, or translation history on our servers.
+        </p>
+        <p>
+          We use Apple StoreKit subscription data only to verify whether your free trial or subscription is active. We use Supabase
+          to issue short-lived OpenAI Realtime access tokens and to keep operational subscription status records.
+        </p>
+        <p>
+          OpenAI processes audio only to provide the translation service requested by the user. Your standard OpenAI API key is never
+          included in the iOS app; server-side secrets are stored only in Supabase environment secrets.
+        </p>
+      </section>
+
+      <section id="terms" class="band">
+        <h2>Terms</h2>
+        <p>
+          Samantha Translate is offered as an auto-renewable weekly subscription with a 3-day free trial for eligible new subscribers.
+          After the trial, the subscription renews at $4.99 per week unless cancelled at least 24 hours before renewal.
+        </p>
+        <p>
+          Billing is handled by Apple. You can manage or cancel your subscription in your Apple account settings. Translation quality
+          may vary based on network conditions, microphone quality, background noise, and language pair.
+        </p>
+      </section>
+
+      <section id="data" class="band">
+        <h2>Personal Data Handling</h2>
+        <dl>
+          <dt>Audio</dt>
+          <dd>Processed live for translation. Not stored by Samantha Translate.</dd>
+          <dt>Transcripts</dt>
+          <dd>Not stored by Samantha Translate.</dd>
+          <dt>Subscription status</dt>
+          <dd>Stored only to verify access, manage trials/subscriptions, prevent abuse, and support customer service.</dd>
+          <dt>Deletion requests</dt>
+          <dd>Email support@nextechia.com to request deletion of operational subscription support records where legally permitted.</dd>
+        </dl>
+      </section>
+
+      <section id="languages" class="band">
+        <h2>Localized Information</h2>
+        <div class="language-grid" aria-label="Localized product summaries">
+          <article>
+            <h3>English</h3>
+            <p>Samantha Translate listens to speech, detects the language, and speaks the translation in your selected output language. The app includes a 3-day free trial, then renews weekly at $4.99 through Apple.</p>
+          </article>
+          <article lang="es">
+            <h3>Español</h3>
+            <p>Samantha Translate escucha voz, detecta el idioma y reproduce la traducción en el idioma elegido por el usuario. La app incluye 3 días de prueba gratis y después se renueva semanalmente por US$4.99 mediante Apple.</p>
+          </article>
+          <article lang="fr">
+            <h3>Français</h3>
+            <p>Samantha Translate écoute la parole, détecte la langue et lit la traduction dans la langue choisie par l’utilisateur. L’app inclut 3 jours d’essai gratuit, puis un renouvellement hebdomadaire de 4,99 USD via Apple.</p>
+          </article>
+          <article lang="zh-Hans">
+            <h3>简体中文</h3>
+            <p>Samantha Translate 会聆听语音、自动识别语言，并用用户选择的输出语言朗读译文。应用提供 3 天免费试用，之后通过 Apple 按每周 4.99 美元自动续订。</p>
+          </article>
+          <article lang="ja">
+            <h3>日本語</h3>
+            <p>Samantha Translate は音声を聞き取り、言語を自動検出し、ユーザーが選択した出力言語で翻訳を読み上げます。3日間の無料トライアル後、Apple 経由で週額4.99米ドルで自動更新されます。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Samantha Translate. Built for simple, private real-time voice translation.</p>
+    </footer>
+  </body>
+</html>

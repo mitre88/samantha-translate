@@ -1,0 +1,15 @@
+.DS_Store
+DerivedData/
+build/
+*.xcarchive
+*.ipa
+*.dSYM
+*.xcuserstate
+xcuserdata/
+.env
+.env.*
+!.env.example
+web/node_modules/
+web/dist/
+supabase/.branches/
+supabase/.temp/
