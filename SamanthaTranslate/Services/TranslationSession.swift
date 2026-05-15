@@ -18,6 +18,7 @@ final class TranslationSession: ObservableObject {
     private let outputEngine = AVAudioEngine()
     private let outputPlayer = AVAudioPlayerNode()
     private let playbackFormat = AVAudioFormat(standardFormatWithSampleRate: 24_000, channels: 1)!
+    private let socketWriter = RealtimeSocketWriter()
     private var webSocket: URLSessionWebSocketTask?
     private var messageTask: Task<Void, Never>?
     private var hasInputTap = false
@@ -67,6 +68,8 @@ final class TranslationSession: ObservableObject {
         outputEngine.stop()
         webSocket?.cancel(with: .goingAway, reason: nil)
         webSocket = nil
+        let socketWriter = socketWriter
+        Task { await socketWriter.clear() }
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         if case .error = state { return }
         state = .idle
@@ -75,6 +78,8 @@ final class TranslationSession: ObservableObject {
     private func startAudioSession() throws {
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
+        try session.setPreferredSampleRate(48_000)
+        try session.setPreferredIOBufferDuration(0.02)
         try session.setActive(true)
     }
 
@@ -100,10 +105,10 @@ final class TranslationSession: ObservableObject {
 
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("realtime=v1", forHTTPHeaderField: "OpenAI-Beta")
 
         let socket = URLSession.shared.webSocketTask(with: request)
         webSocket = socket
+        await socketWriter.setSocket(WebSocketBox(socket))
         socket.resume()
         listenForMessages()
 
@@ -119,6 +124,9 @@ final class TranslationSession: ObservableObject {
                         "format": ["type": "audio/pcm", "rate": 24000],
                         "turn_detection": [
                             "type": "server_vad",
+                            "threshold": 0.45,
+                            "prefix_padding_ms": 160,
+                            "silence_duration_ms": 240,
                             "create_response": true,
                             "interrupt_response": true
                         ],
@@ -143,14 +151,16 @@ final class TranslationSession: ObservableObject {
             hasInputTap = false
         }
 
-        input.installTap(onBus: 0, bufferSize: 2048, format: format) { [weak self] buffer, _ in
-            guard let self else { return }
+        let socketWriter = socketWriter
+        input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
             do {
-                let payload = try Self.realtimePCMBase64(from: buffer)
-                guard !payload.isEmpty else { return }
-                Task { try? await self.sendJSON(["type": "input_audio_buffer.append", "audio": payload]) }
+                let chunk = try Self.realtimeAudioChunk(from: buffer)
+                guard !chunk.samples.isEmpty else { return }
+                Task.detached(priority: .userInitiated) {
+                    await socketWriter.sendAudioChunk(chunk)
+                }
             } catch {
-                Task { @MainActor in self.fail(error.localizedDescription) }
+                Task { @MainActor in self?.fail(error.localizedDescription) }
             }
         }
         hasInputTap = true
@@ -238,35 +248,33 @@ final class TranslationSession: ObservableObject {
         state = .error(message)
     }
 
-    private static func realtimePCMBase64(from buffer: AVAudioPCMBuffer) throws -> String {
-        guard let targetFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: 24_000, channels: 1, interleaved: true),
-              let converter = AVAudioConverter(from: buffer.format, to: targetFormat) else {
-            throw AudioPipelineError.audioConverterUnavailable
-        }
-        let outputFrameCapacity = AVAudioFrameCount((Double(buffer.frameLength) * targetFormat.sampleRate / buffer.format.sampleRate).rounded(.up)) + 16
-        guard let outputBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat, frameCapacity: outputFrameCapacity) else {
-            throw AudioPipelineError.audioConverterUnavailable
-        }
+    nonisolated private static func realtimeAudioChunk(from buffer: AVAudioPCMBuffer) throws -> RealtimeAudioChunk {
+        let frameCount = Int(buffer.frameLength)
+        guard frameCount > 0 else { return RealtimeAudioChunk(samples: [], sampleRate: buffer.format.sampleRate) }
+        let channelCount = max(1, Int(buffer.format.channelCount))
+        var samples = Array(repeating: Float.zero, count: frameCount)
 
-        let inputState = ConverterInputState(buffer)
-        var conversionError: NSError?
-        let status = converter.convert(to: outputBuffer, error: &conversionError) { _, outStatus in
-            if inputState.wasConsumed {
-                outStatus.pointee = .noDataNow
-                return nil
+        if let floatChannels = buffer.floatChannelData {
+            for frame in 0..<frameCount {
+                var mixed = Float.zero
+                for channel in 0..<channelCount {
+                    mixed += floatChannels[channel][frame]
+                }
+                samples[frame] = mixed / Float(channelCount)
             }
-            inputState.wasConsumed = true
-            outStatus.pointee = .haveData
-            return inputState.buffer
+        } else if let int16Channels = buffer.int16ChannelData {
+            for frame in 0..<frameCount {
+                var mixed = Float.zero
+                for channel in 0..<channelCount {
+                    mixed += Float(Int16(littleEndian: int16Channels[channel][frame])) / Float(Int16.max)
+                }
+                samples[frame] = mixed / Float(channelCount)
+            }
+        } else {
+            throw AudioPipelineError.audioConversionFailed
         }
 
-        if let conversionError { throw conversionError }
-        guard status != .error else { throw AudioPipelineError.audioConversionFailed }
-        guard outputBuffer.frameLength > 0 else { return "" }
-
-        let audioBuffer = outputBuffer.audioBufferList.pointee.mBuffers
-        guard let bytes = audioBuffer.mData else { return "" }
-        return Data(bytes: bytes, count: Int(audioBuffer.mDataByteSize)).base64EncodedString()
+        return RealtimeAudioChunk(samples: samples, sampleRate: buffer.format.sampleRate)
     }
 
     private static func errorMessage(from event: [String: Any]) -> String {
@@ -275,6 +283,73 @@ final class TranslationSession: ObservableObject {
             if let code = error["code"] as? String { return code }
         }
         return "The realtime voice session reported an error."
+    }
+}
+
+private final class WebSocketBox: @unchecked Sendable {
+    let task: URLSessionWebSocketTask
+
+    init(_ task: URLSessionWebSocketTask) {
+        self.task = task
+    }
+}
+
+private struct RealtimeAudioChunk: Sendable {
+    let samples: [Float]
+    let sampleRate: Double
+}
+
+private actor RealtimeSocketWriter {
+    private var socket: WebSocketBox?
+    private var pendingChunks = 0
+
+    func setSocket(_ socket: WebSocketBox) {
+        self.socket = socket
+    }
+
+    func clear() {
+        socket = nil
+        pendingChunks = 0
+    }
+
+    func sendAudioChunk(_ chunk: RealtimeAudioChunk) async {
+        pendingChunks += 1
+        guard pendingChunks <= 10 else {
+            pendingChunks -= 1
+            return
+        }
+        defer { pendingChunks -= 1 }
+
+        guard let payload = Self.pcm24kBase64(from: chunk), !payload.isEmpty else { return }
+        try? await sendJSON(["type": "input_audio_buffer.append", "audio": payload])
+    }
+
+    func sendJSON(_ object: [String: Any]) async throws {
+        let data = try JSONSerialization.data(withJSONObject: object)
+        guard let text = String(data: data, encoding: .utf8) else { return }
+        guard let socket else { throw BackendError.invalidResponse }
+        try await socket.task.send(.string(text))
+    }
+
+    nonisolated private static func pcm24kBase64(from chunk: RealtimeAudioChunk) -> String? {
+        guard chunk.sampleRate > 0, !chunk.samples.isEmpty else { return nil }
+        let targetRate = 24_000.0
+        let outputCount = max(1, Int((Double(chunk.samples.count) * targetRate / chunk.sampleRate).rounded(.down)))
+        let step = chunk.sampleRate / targetRate
+        var data = Data(capacity: outputCount * MemoryLayout<Int16>.size)
+
+        for index in 0..<outputCount {
+            let sourcePosition = Double(index) * step
+            let lower = min(Int(sourcePosition), chunk.samples.count - 1)
+            let upper = min(lower + 1, chunk.samples.count - 1)
+            let fraction = Float(sourcePosition - Double(lower))
+            let interpolated = chunk.samples[lower] + (chunk.samples[upper] - chunk.samples[lower]) * fraction
+            let clipped = max(-1, min(1, interpolated))
+            var sample = Int16(clipped * Float(Int16.max)).littleEndian
+            withUnsafeBytes(of: &sample) { data.append(contentsOf: $0) }
+        }
+
+        return data.base64EncodedString()
     }
 }
 
@@ -292,14 +367,5 @@ private enum AudioPipelineError: LocalizedError {
         case .audioConversionFailed:
             "The microphone audio conversion failed."
         }
-    }
-}
-
-private final class ConverterInputState: @unchecked Sendable {
-    let buffer: AVAudioPCMBuffer
-    var wasConsumed = false
-
-    init(_ buffer: AVAudioPCMBuffer) {
-        self.buffer = buffer
     }
 }
