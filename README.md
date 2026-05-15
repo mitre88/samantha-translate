@@ -40,6 +40,7 @@ Set these in Supabase, never in the iOS app:
 supabase secrets set OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 supabase secrets set OPENAI_REALTIME_MODEL=gpt-realtime
 supabase secrets set OPENAI_REALTIME_VOICE=marin
+supabase secrets set OPENAI_CLIENT_SECRET_TTL_SECONDS=120
 ```
 
 ## Web

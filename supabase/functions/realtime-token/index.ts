@@ -15,6 +15,7 @@ type RequestBody = {
 
 const PRODUCT_ID = "samantha_translate_weekly";
 const MAX_TOKEN_REQUESTS_PER_DAY = Number(Deno.env.get("MAX_TOKEN_REQUESTS_PER_DAY") ?? "240");
+const CLIENT_SECRET_TTL_SECONDS = Number(Deno.env.get("OPENAI_CLIENT_SECRET_TTL_SECONDS") ?? "120");
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -57,7 +58,10 @@ Deno.serve(async (request) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      expires_after: { seconds: 60 },
+      expires_after: {
+        anchor: "created_at",
+        seconds: CLIENT_SECRET_TTL_SECONDS,
+      },
       session: {
         type: "realtime",
         model: Deno.env.get("OPENAI_REALTIME_MODEL") ?? "gpt-realtime",
@@ -136,4 +140,3 @@ async function recordAndCheckUsage(
   });
   return true;
 }
-
