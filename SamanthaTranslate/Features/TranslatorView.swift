@@ -93,6 +93,10 @@ struct TranslatorView: View {
                     .accessibilityLabel(Text("settings.title"))
                 }
             }
+            .onChange(of: outputLanguageRaw) { _, newValue in
+                guard let language = AppLanguage(rawValue: newValue) else { return }
+                translationSession.updateOutputLanguage(language)
+            }
         }
     }
 }

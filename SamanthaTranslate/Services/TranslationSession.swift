@@ -63,6 +63,17 @@ final class TranslationSession: ObservableObject {
         state = .idle
     }
 
+    func updateOutputLanguage(_ outputLanguage: AppLanguage) {
+        guard case .listening = state, let realtimeClient else { return }
+        do {
+            try realtimeClient.updateOutputLanguage(outputLanguage)
+            lastTranscript = ""
+            lastTranslation = ""
+        } catch {
+            fail(error.localizedDescription)
+        }
+    }
+
     private func handle(eventText text: String) {
         guard let data = text.data(using: .utf8),
               let event = try? JSONSerialization.jsonObject(with: data) as? [String: Any],

@@ -53,7 +53,12 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
         )
         let audioSource = factory.audioSource(with: audioConstraints)
         let audioTrack = factory.audioTrack(with: audioSource, trackId: "samantha-microphone")
-        peerConnection.add(audioTrack, streamIds: ["samantha-translate"])
+        let audioTransceiverInit = RTCRtpTransceiverInit()
+        audioTransceiverInit.direction = RTCRtpTransceiverDirection.sendRecv
+        audioTransceiverInit.streamIds = ["samantha-translate"]
+        guard peerConnection.addTransceiver(with: audioTrack, init: audioTransceiverInit) != nil else {
+            throw RealtimeWebRTCError.audioTransceiverUnavailable
+        }
 
         let channelConfig = RTCDataChannelConfiguration()
         guard let dataChannel = peerConnection.dataChannel(forLabel: "oai-events", configuration: channelConfig) else {
@@ -66,6 +71,15 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
         let offerSDP = try await peerConnection.createAndSetLocalOffer(with: constraints)
         let answerSDP = try await Self.fetchRemoteAnswer(endpoint: endpoint, token: token, localSDP: offerSDP)
         try await peerConnection.setRemoteAnswerSDP(answerSDP)
+    }
+
+    func updateOutputLanguage(_ outputLanguage: AppLanguage) throws {
+        let payload = Self.sessionUpdatePayload(outputLanguage: outputLanguage)
+        if dataChannel?.readyState == .open {
+            try sendJSON(payload)
+        } else {
+            pendingSessionUpdate = payload
+        }
     }
 
     func disconnect() {
@@ -82,6 +96,10 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
     }
 
     private func configureAudioSession() throws {
+        let webRTCAudioSession = RTCAudioSession.sharedInstance()
+        webRTCAudioSession.useManualAudio = false
+        webRTCAudioSession.isAudioEnabled = true
+
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
         try session.setPreferredSampleRate(48_000)
@@ -159,6 +177,18 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
         self.dataChannel = dataChannel
         flushPendingSessionUpdateIfNeeded()
     }
+
+    func peerConnection(_ peerConnection: RTCPeerConnection, didAdd rtpReceiver: RTCRtpReceiver, streams mediaStreams: [RTCMediaStream]) {
+        if rtpReceiver.track?.kind == kRTCMediaStreamTrackKindAudio {
+            RTCAudioSession.sharedInstance().isAudioEnabled = true
+        }
+    }
+
+    func peerConnection(_ peerConnection: RTCPeerConnection, didStartReceivingOn transceiver: RTCRtpTransceiver) {
+        if transceiver.mediaType == RTCRtpMediaType.audio {
+            RTCAudioSession.sharedInstance().isAudioEnabled = true
+        }
+    }
 }
 
 extension RealtimeWebRTCClient: RTCDataChannelDelegate {
@@ -216,6 +246,7 @@ private extension RTCPeerConnection {
 private enum RealtimeWebRTCError: LocalizedError {
     case peerConnectionUnavailable
     case dataChannelUnavailable
+    case audioTransceiverUnavailable
     case offerFailed
     case emptySDPAnswer
     case signalingFailed(String)
@@ -226,6 +257,8 @@ private enum RealtimeWebRTCError: LocalizedError {
             "The realtime audio connection could not be created."
         case .dataChannelUnavailable:
             "The realtime event channel could not be created."
+        case .audioTransceiverUnavailable:
+            "The realtime audio output could not be negotiated."
         case .offerFailed:
             "The realtime audio offer could not be created."
         case .emptySDPAnswer:
