@@ -29,17 +29,20 @@ struct VoiceOrb: View {
     let isListening: Bool
     var size: CGFloat = 156
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private let orbFill = Color.white
+    private let orbMark = Color.black.opacity(0.86)
+    private let orbInnerRing = Color.black.opacity(0.12)
 
     var body: some View {
         ZStack {
             Circle()
-                .fill(.white)
+                .fill(orbFill)
                 .frame(width: size, height: size)
                 .shadow(color: .black.opacity(0.08), radius: 24, y: 14)
                 .shadow(color: .cyan.opacity(isListening ? 0.22 : 0.08), radius: isListening ? 34 : 18)
 
             Circle()
-                .strokeBorder(.black.opacity(0.05), lineWidth: 1)
+                .strokeBorder(orbInnerRing, lineWidth: 1)
                 .frame(width: size * 0.82, height: size * 0.82)
 
             Circle()
@@ -50,8 +53,8 @@ struct VoiceOrb: View {
 
             Image(systemName: "waveform")
                 .font(.system(size: size * 0.24, weight: .semibold))
-                .foregroundStyle(.primary)
-                .symbolEffect(.variableColor.iterative, isActive: isListening)
+                .symbolRenderingMode(.monochrome)
+                .foregroundStyle(orbMark)
         }
         .scaleEffect(isListening && !reduceMotion ? 1.03 : 1)
         .animation(reduceMotion ? nil : .smooth(duration: 1.2).repeatForever(autoreverses: true), value: isListening)
