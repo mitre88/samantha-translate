@@ -22,6 +22,11 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
     private var pendingSessionUpdate: [String: Any]?
     private var onEvent: (@MainActor @Sendable (String) -> Void)?
     private var onFailure: (@MainActor @Sendable (String) -> Void)?
+    private var isDisconnecting = false
+
+    deinit {
+        disconnect()
+    }
 
     func connect(
         token: String,
@@ -31,6 +36,7 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
         onFailure: @escaping @MainActor @Sendable (String) -> Void
     ) async throws {
         Self.initializeWebRTC
+        isDisconnecting = false
         self.onEvent = onEvent
         self.onFailure = onFailure
 
@@ -92,15 +98,22 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
     }
 
     func disconnect() {
-        dataChannel?.delegate = nil
-        dataChannel?.close()
-        dataChannel = nil
-        peerConnection?.close()
-        peerConnection = nil
-        peerConnectionFactory = nil
-        pendingSessionUpdate = nil
+        isDisconnecting = true
         onEvent = nil
         onFailure = nil
+        pendingSessionUpdate = nil
+
+        let activeDataChannel = dataChannel
+        let activePeerConnection = peerConnection
+
+        dataChannel = nil
+        peerConnection = nil
+        peerConnectionFactory = nil
+
+        activeDataChannel?.delegate = nil
+        activeDataChannel?.close()
+        activePeerConnection?.close()
+
         deactivateAudioSession()
     }
 
@@ -132,7 +145,7 @@ final class RealtimeWebRTCClient: NSObject, @unchecked Sendable {
     }
 
     private func flushPendingSessionUpdateIfNeeded() {
-        guard dataChannel?.readyState == .open, let pendingSessionUpdate else { return }
+        guard !isDisconnecting, dataChannel?.readyState == .open, let pendingSessionUpdate else { return }
         do {
             try sendJSON(pendingSessionUpdate)
             self.pendingSessionUpdate = nil
@@ -205,6 +218,7 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {}
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
+        guard !isDisconnecting else { return }
         if newState == .connected || newState == .completed {
             ensureAudioPlayoutEnabled()
         } else if newState == .failed || newState == .disconnected || newState == .closed {
@@ -213,6 +227,7 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
+        guard !isDisconnecting else { return }
         dataChannel.delegate = self
         self.dataChannel = dataChannel
         flushPendingSessionUpdateIfNeeded()
@@ -235,6 +250,7 @@ extension RealtimeWebRTCClient: RTCPeerConnectionDelegate {
 
 extension RealtimeWebRTCClient: RTCDataChannelDelegate {
     func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
+        guard !isDisconnecting else { return }
         if dataChannel.readyState == .open {
             flushPendingSessionUpdateIfNeeded()
         } else if dataChannel.readyState == .closed {
@@ -243,6 +259,7 @@ extension RealtimeWebRTCClient: RTCDataChannelDelegate {
     }
 
     func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
+        guard !isDisconnecting else { return }
         guard !buffer.isBinary,
               let text = String(data: buffer.data, encoding: .utf8) else { return }
         Task { @MainActor in onEvent?(text) }
