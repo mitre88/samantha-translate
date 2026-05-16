@@ -30,8 +30,14 @@
 "translator.state.preparing" = "正在准备安全语音会话";
 "translator.state.listening" = "正在聆听";
 "translator.state.error" = "需要注意";
+"translator.status.ready" = "就绪";
+"translator.status.secure" = "安全会话";
+"translator.status.live" = "实时";
+"translator.status.error" = "检查连接";
 "translator.subtitle" = "自然说话。Samantha 会用你选择的语言回答。";
 "translator.transcript.title" = "实时转写";
+"translator.transcript.waiting" = "等待中";
+"translator.transcript.live" = "实时";
 "translator.transcript.empty" = "Samantha 聆听时，原文语音和译文会显示在这里。";
 "translator.transcript.source" = "原文";
 "translator.transcript.translation" = "翻译";

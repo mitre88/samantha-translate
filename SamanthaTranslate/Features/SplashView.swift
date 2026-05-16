@@ -46,18 +46,42 @@ struct VoiceOrb: View {
                 .frame(width: size * 0.82, height: size * 0.82)
 
             Circle()
-                .strokeBorder(.cyan.opacity(isListening ? 0.34 : 0.14), lineWidth: 2)
+                .strokeBorder(AppTheme.voiceTint.opacity(isListening ? 0.34 : 0.14), lineWidth: 2)
                 .frame(width: size * 0.98, height: size * 0.98)
                 .scaleEffect(isListening && !reduceMotion ? 1.08 : 1)
                 .opacity(isListening ? 0.7 : 0.35)
 
-            Image(systemName: "waveform")
-                .font(.system(size: size * 0.24, weight: .semibold))
-                .symbolRenderingMode(.monochrome)
-                .foregroundStyle(orbMark)
+            OrbWaveformMark(size: size * 0.32, color: orbMark, isListening: isListening)
         }
         .scaleEffect(isListening && !reduceMotion ? 1.03 : 1)
         .animation(reduceMotion ? nil : .smooth(duration: 1.2).repeatForever(autoreverses: true), value: isListening)
         .accessibilityLabel(Text("accessibility.voice_orb"))
+    }
+}
+
+private struct OrbWaveformMark: View {
+    let size: CGFloat
+    let color: Color
+    let isListening: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let levels: [CGFloat] = [0.42, 0.72, 1.0, 0.72, 0.42]
+
+    var body: some View {
+        HStack(alignment: .center, spacing: size * 0.11) {
+            ForEach(levels.indices, id: \.self) { index in
+                Capsule(style: .continuous)
+                    .fill(color)
+                    .frame(width: max(size * 0.12, 4), height: size * levels[index])
+                    .scaleEffect(y: animatedScale(for: index), anchor: .center)
+            }
+        }
+        .frame(width: size * 1.22, height: size)
+        .animation(reduceMotion ? nil : .smooth(duration: 0.75).repeatForever(autoreverses: true).delay(Double(levels.count - 1) * 0.015), value: isListening)
+    }
+
+    private func animatedScale(for index: Int) -> CGFloat {
+        guard isListening && !reduceMotion else { return 1 }
+        return index.isMultiple(of: 2) ? 1.12 : 0.9
     }
 }

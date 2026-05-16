@@ -11,6 +11,7 @@ struct OnboardingView: View {
                 VStack(spacing: AppSpacing.lg) {
                     Spacer(minLength: AppSpacing.md)
                     HeaderBlock()
+                    FeatureList()
                     Spacer(minLength: AppSpacing.md)
                     PrimaryButton(title: "onboarding.continue", systemImage: "arrow.right", action: onContinue)
                 }
@@ -46,6 +47,30 @@ private struct HeaderBlock: View {
             }
         }
         .frame(maxWidth: .infinity)
+    }
+}
+
+private struct FeatureList: View {
+    var body: some View {
+        AppSection {
+            FeatureRow(
+                icon: "sparkles",
+                title: "onboarding.feature.detect",
+                detail: "onboarding.feature.detect.body"
+            )
+
+            FeatureRow(
+                icon: "speaker.wave.2.fill",
+                title: "onboarding.feature.speak",
+                detail: "onboarding.feature.speak.body"
+            )
+
+            FeatureRow(
+                icon: "lock.shield.fill",
+                title: "onboarding.feature.private",
+                detail: "onboarding.feature.private.body"
+            )
+        }
     }
 }
 

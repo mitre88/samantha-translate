@@ -3,14 +3,49 @@
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
   background: #f7f8f9;
   color: #111416;
+  scroll-behavior: smooth;
+}
+
+html {
+  background: #f7f8f9;
 }
 
 body {
   margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #f7f8f9;
+  -webkit-tap-highlight-color: rgba(52, 120, 138, 0.16);
+  touch-action: manipulation;
 }
 
 a {
   color: inherit;
+}
+
+a:focus-visible {
+  outline: 3px solid #34788a;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #111416;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-180%);
+  transition: transform 160ms ease-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 .nav {
@@ -33,6 +68,7 @@ a {
   gap: 10px;
   font-weight: 700;
   text-decoration: none;
+  min-width: 0;
 }
 
 .mark {
@@ -53,6 +89,12 @@ nav {
 nav a {
   text-decoration: none;
   color: color-mix(in srgb, CanvasText 72%, transparent);
+  text-underline-offset: 4px;
+}
+
+nav a:hover {
+  color: CanvasText;
+  text-decoration: underline;
 }
 
 .hero {
@@ -75,7 +117,7 @@ nav a {
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: 0.08em;
   font-size: 0.82rem;
   color: #34788a;
   font-weight: 800;
@@ -86,11 +128,13 @@ h1 {
   line-height: 0.92;
   margin: 0;
   max-width: 980px;
+  text-wrap: balance;
 }
 
 h2 {
   font-size: clamp(2rem, 4vw, 3.5rem);
   margin: 0 0 18px;
+  text-wrap: balance;
 }
 
 .lead {
@@ -119,12 +163,14 @@ h2 {
   border-top: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
   max-width: 980px;
   margin: 0 auto;
+  scroll-margin-top: 92px;
 }
 
 .band p, .band li, dd {
   font-size: 1.1rem;
   line-height: 1.65;
   color: color-mix(in srgb, CanvasText 72%, transparent);
+  overflow-wrap: anywhere;
 }
 
 dt {
@@ -143,6 +189,7 @@ dt {
   border-radius: 8px;
   padding: 20px;
   background: color-mix(in srgb, Canvas 88%, CanvasText 4%);
+  min-width: 0;
 }
 
 .language-grid h3 {
@@ -153,6 +200,25 @@ footer {
   padding: 36px clamp(18px, 7vw, 96px);
   text-align: center;
   color: color-mix(in srgb, CanvasText 58%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+
+  .skip-link {
+    transition: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  html,
+  body {
+    background: #05070a;
+    color: #f6f8fa;
+  }
 }
 
 @media (max-width: 680px) {

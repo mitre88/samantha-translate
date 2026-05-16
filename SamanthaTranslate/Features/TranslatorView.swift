@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TranslatorView: View {
     @EnvironmentObject private var translationSession: TranslationSession
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("outputLanguage") private var outputLanguageRaw = AppLanguage.english.rawValue
     let outputLanguage: AppLanguage
 
@@ -24,8 +25,13 @@ struct TranslatorView: View {
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: true) {
                         VStack(spacing: AppSpacing.lg) {
-                            VoiceOrb(isListening: translationSession.state == .listening, size: 116)
-                                .padding(.top, AppSpacing.md)
+                            VStack(spacing: AppSpacing.md) {
+                                statusPill
+
+                                VoiceOrb(isListening: translationSession.state == .listening, size: 116)
+                                    .padding(.top, AppSpacing.xs)
+                            }
+                            .padding(.top, AppSpacing.md)
 
                             statusBlock
                             languagePicker
@@ -93,6 +99,50 @@ struct TranslatorView: View {
         .frame(maxWidth: .infinity)
     }
 
+    private var statusPill: some View {
+        Label(statusLabel, systemImage: statusSymbol)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(statusForeground)
+            .padding(.horizontal, AppSpacing.sm)
+            .padding(.vertical, AppSpacing.xs)
+            .background(statusBackground, in: Capsule(style: .continuous))
+            .accessibilityHidden(true)
+    }
+
+    private var statusLabel: LocalizedStringKey {
+        switch translationSession.state {
+        case .idle: "translator.status.ready"
+        case .preparing: "translator.status.secure"
+        case .listening: "translator.status.live"
+        case .error: "translator.status.error"
+        }
+    }
+
+    private var statusSymbol: String {
+        switch translationSession.state {
+        case .idle: "checkmark.circle.fill"
+        case .preparing: "lock.fill"
+        case .listening: "waveform"
+        case .error: "exclamationmark.triangle.fill"
+        }
+    }
+
+    private var statusForeground: Color {
+        switch translationSession.state {
+        case .listening: return .black
+        case .error: return .red
+        default: return .primary
+        }
+    }
+
+    private var statusBackground: Color {
+        switch translationSession.state {
+        case .listening: return AppTheme.successTint
+        case .error: return Color.red.opacity(0.12)
+        default: return AppTheme.elevatedSurface
+        }
+    }
+
     private var languagePicker: some View {
         AppSection {
             HStack(spacing: AppSpacing.md) {
@@ -116,8 +166,16 @@ struct TranslatorView: View {
     private var transcriptPanel: some View {
         AppSection {
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                Text("translator.transcript.title")
-                    .font(.headline)
+                HStack(alignment: .firstTextBaseline) {
+                    Text("translator.transcript.title")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Text(translationSession.lastTranslation.isEmpty ? "translator.transcript.waiting" : "translator.transcript.live")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(AppTheme.muted)
+                }
 
                 if translationSession.lastTranscript.isEmpty && translationSession.lastTranslation.isEmpty {
                     Text("translator.transcript.empty")
@@ -164,11 +222,14 @@ struct TranslatorView: View {
             }
 
             if case .error(let message) = translationSession.state {
-                Text(message)
-                    .font(.footnote)
+                Label(message, systemImage: "exclamationmark.triangle.fill")
+                    .font(.footnote.weight(.medium))
                     .foregroundStyle(.red)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+                    .padding(AppSpacing.sm)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.red.opacity(0.10), in: RoundedRectangle(cornerRadius: AppRadius.sm, style: .continuous))
             }
         }
         .padding(.horizontal, AppSpacing.lg)
@@ -180,7 +241,7 @@ struct TranslatorView: View {
 
     private func scrollToLatest(using proxy: ScrollViewProxy) {
         guard !translationSession.lastTranscript.isEmpty || !translationSession.lastTranslation.isEmpty else { return }
-        withAnimation(.smooth(duration: 0.25)) {
+        withAnimation(reduceMotion ? nil : .smooth(duration: 0.25)) {
             proxy.scrollTo(transcriptBottomID, anchor: .bottom)
         }
     }
@@ -208,7 +269,7 @@ private struct TranscriptBlock: View {
         .padding(AppSpacing.md)
         .background(
             RoundedRectangle(cornerRadius: AppRadius.sm, style: .continuous)
-                .fill(isPrimary ? Color.accentColor.opacity(0.12) : Color(.tertiarySystemGroupedBackground))
+                .fill(isPrimary ? AppTheme.successTint.opacity(0.18) : AppTheme.elevatedSurface)
         )
     }
 }

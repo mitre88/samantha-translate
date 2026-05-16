@@ -19,7 +19,10 @@ enum AppRadius {
 enum AppTheme {
     static let pageBackground = Color(.systemGroupedBackground)
     static let surface = Color(.secondarySystemGroupedBackground)
+    static let elevatedSurface = Color(.tertiarySystemGroupedBackground)
     static let muted = Color.secondary
+    static let successTint = Color(red: 0.53, green: 0.95, blue: 0.76)
+    static let voiceTint = Color(red: 0.42, green: 0.88, blue: 1.0)
 }
 
 enum AppLanguage: String, CaseIterable, Identifiable {
@@ -86,6 +89,7 @@ struct DarkPrimaryButton: View {
     let title: LocalizedStringKey
     var systemImage: String? = nil
     let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -103,6 +107,7 @@ struct DarkPrimaryButton: View {
                 )
         }
         .buttonStyle(.plain)
+        .modifier(PressFeedbackModifier(disabled: reduceMotion))
         .contentShape(Capsule(style: .continuous))
     }
 }
@@ -137,5 +142,25 @@ struct AppSection<Content: View>: View {
         .padding(AppSpacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppTheme.surface, in: RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+    }
+}
+
+private struct PressFeedbackModifier: ViewModifier {
+    let disabled: Bool
+
+    func body(content: Content) -> some View {
+        if disabled {
+            content
+        } else {
+            content.buttonStyle(ScaleOnPressButtonStyle())
+        }
+    }
+}
+
+private struct ScaleOnPressButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.985 : 1)
+            .animation(.smooth(duration: 0.12), value: configuration.isPressed)
     }
 }

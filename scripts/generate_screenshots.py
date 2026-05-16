@@ -101,11 +101,12 @@ def headline(draw, title, subtitle, y=152, centered=False):
 
 def app_badge(draw, y=2620):
     rounded(draw, (90, y, 520, y + 92), 46, (255, 255, 255, 24), (255, 255, 255, 34), 1)
-    draw.ellipse((120, y + 22, 168, y + 70), fill=WHITE)
-    bars = [(184, 46), (202, 62), (220, 74), (238, 58), (256, 42)]
+    draw.rounded_rectangle((120, y + 18, 172, y + 74), radius=14, fill=(12, 16, 20))
+    draw.ellipse((130, y + 26, 162, y + 58), fill=WHITE)
+    bars = [(134, 14), (142, 22), (150, 28), (158, 20)]
     for x, h in bars:
-        rounded(draw, (x, y + 46 - h // 2, x + 8, y + 46 + h // 2), 4, BLACK)
-    draw.text((292, y + 26), "Samantha Translate", font=font(26, "bold"), fill=TEXT)
+        rounded(draw, (x, y + 42 - h // 2, x + 4, y + 42 + h // 2), 2, BLACK)
+    draw.text((202, y + 26), "Samantha Translate", font=font(26, "bold"), fill=TEXT)
 
 
 def mini_orb(canvas, draw, cx, cy, r=150, glow=CYAN):
@@ -150,7 +151,7 @@ def draw_translation_panel(draw, box, dark=False):
     text_lines(draw, (x1 + 46, y1 + 96), "Could you tell me about your last project?", 40, primary, "bold", x2 - x1 - 92, 10)
     rounded(draw, (x1 + 46, y1 + 268, x2 - 46, y1 + 470), 28, (225, 252, 240))
     draw.text((x1 + 84, y1 + 304), "Spoken translation", font=font(28, "bold"), fill=(50, 104, 78))
-    text_lines(draw, (x1 + 84, y1 + 354), "¿Puedes hablarme de tu ultimo proyecto?", 34, (12, 17, 22), "bold", x2 - x1 - 168, 8)
+    text_lines(draw, (x1 + 84, y1 + 354), "¿Puedes hablarme de tu último proyecto?", 34, (12, 17, 22), "bold", x2 - x1 - 168, 8)
 
 
 def screen_01():

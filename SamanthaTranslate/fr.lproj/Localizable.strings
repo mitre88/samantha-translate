@@ -30,8 +30,14 @@
 "translator.state.preparing" = "Préparation de la session sécurisée";
 "translator.state.listening" = "Écoute";
 "translator.state.error" = "Attention requise";
+"translator.status.ready" = "Prête";
+"translator.status.secure" = "Session sécurisée";
+"translator.status.live" = "En direct";
+"translator.status.error" = "Vérifier la connexion";
 "translator.subtitle" = "Parlez naturellement. Samantha répondra dans la langue choisie.";
 "translator.transcript.title" = "Transcription en direct";
+"translator.transcript.waiting" = "En attente";
+"translator.transcript.live" = "En direct";
 "translator.transcript.empty" = "Votre parole source et la traduction apparaîtront ici pendant l’écoute.";
 "translator.transcript.source" = "Original";
 "translator.transcript.translation" = "Traduction";

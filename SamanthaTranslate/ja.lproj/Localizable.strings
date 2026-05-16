@@ -30,8 +30,14 @@
 "translator.state.preparing" = "安全な音声セッションを準備中";
 "translator.state.listening" = "聞き取り中";
 "translator.state.error" = "確認が必要です";
+"translator.status.ready" = "準備完了";
+"translator.status.secure" = "安全なセッション";
+"translator.status.live" = "ライブ";
+"translator.status.error" = "接続を確認";
 "translator.subtitle" = "自然に話してください。Samantha が選択した言語で返答します。";
 "translator.transcript.title" = "ライブ文字起こし";
+"translator.transcript.waiting" = "待機中";
+"translator.transcript.live" = "ライブ";
 "translator.transcript.empty" = "Samantha が聞き取っている間、元の音声と翻訳がここに表示されます。";
 "translator.transcript.source" = "原文";
 "translator.transcript.translation" = "翻訳";

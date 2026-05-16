@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <header class="nav">
-      <a href="#home" class="brand"><span class="mark"></span>Samantha Translate</a>
-      <nav>
+      <a href="#home" class="brand"><span class="mark" aria-hidden="true"></span><span translate="no">Samantha Translate</span></a>
+      <nav aria-label="Primary">
         <a href="#support">Support</a>
         <a href="#privacy">Privacy</a>
         <a href="#terms">Terms</a>
@@ -19,11 +20,11 @@
       </nav>
     </header>
 
-    <main id="home">
-      <section class="hero">
+    <main id="main">
+      <section id="home" class="hero">
         <div class="orb" aria-hidden="true"></div>
         <p class="eyebrow">Real-time speech translation</p>
-        <h1>Hear any language. Listen in yours.</h1>
+        <h1>Hear Any Language. Listen in Yours.</h1>
         <p class="lead">
           Samantha Translate listens to speech, detects the source language, and speaks the translation in the language selected by the user.
         </p>
