@@ -35,20 +35,28 @@ struct PaywallView: View {
 
 private struct PaywallHeader: View {
     var body: some View {
-        VStack(spacing: AppSpacing.md) {
+        VStack(spacing: AppSpacing.lg) {
             Label("paywall.native_badge", systemImage: "apple.logo")
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(AppTheme.muted)
+                .foregroundStyle(AppTheme.quietInk)
                 .padding(.horizontal, AppSpacing.sm)
                 .padding(.vertical, AppSpacing.xs)
                 .background(.thinMaterial, in: Capsule(style: .continuous))
 
-            VoiceOrb(isListening: false, size: 92)
-                .padding(.top, AppSpacing.xs)
+            ZStack {
+                Circle()
+                    .fill(AppTheme.successTint.opacity(0.16))
+                    .frame(width: 180, height: 180)
+                    .blur(radius: 34)
+
+                VoiceOrb(isListening: false, size: 106)
+            }
+            .frame(height: 126)
+            .accessibilityHidden(true)
 
             VStack(spacing: AppSpacing.sm) {
                 Text("paywall.title")
-                    .font(.title2.weight(.bold))
+                    .font(.title.weight(.bold))
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
                     .minimumScaleFactor(0.82)

@@ -22,9 +22,14 @@ Refero style search for voice and Apple-adjacent interfaces highlighted these us
 - Layout: one clear primary action, compact status, language control, then live transcript.
 - Motion: pulse only while listening or during splash. Respect Reduce Motion.
 
+## Product UI Notes
+
+- Main translator screen should feel like a live listening cockpit, not a generic form: status chip, output-language chip, orb stage, signal field, then transcript.
+- Onboarding and paywall should share the orb as a product object, with restrained material panels and black primary actions.
+- Panels can use subtle material and hairline borders, but avoid card stacks that read like a generated SaaS template.
+
 ## App Store Assets
 
 - Icon must remain text-free and recognizable at 60px.
 - Screenshots should lead with the live translation promise, then interview/travel use, subtitles plus spoken output, Apple subscription clarity, language choice, and privacy.
 - Marketing art can use generated backgrounds, but must never fake app evidence or unsupported claims.
-

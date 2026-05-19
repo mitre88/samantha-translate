@@ -26,13 +26,28 @@ struct OnboardingView: View {
 
 private struct HeaderBlock: View {
     var body: some View {
-        VStack(spacing: AppSpacing.md) {
-            VoiceOrb(isListening: true, size: 112)
-                .padding(.bottom, AppSpacing.xs)
+        VStack(spacing: AppSpacing.lg) {
+            ZStack {
+                Circle()
+                    .fill(AppTheme.voiceTint.opacity(0.16))
+                    .frame(width: 220, height: 220)
+                    .blur(radius: 34)
+
+                VoiceOrb(isListening: true, size: 128)
+            }
+            .frame(height: 156)
+            .accessibilityHidden(true)
 
             VStack(spacing: AppSpacing.sm) {
+                Text("app.tagline")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppTheme.quietInk)
+                    .padding(.horizontal, AppSpacing.sm)
+                    .padding(.vertical, AppSpacing.xs)
+                    .background(.thinMaterial, in: Capsule(style: .continuous))
+
                 Text("onboarding.title")
-                    .font(.title2.bold())
+                    .font(.title.weight(.bold))
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
                     .minimumScaleFactor(0.82)
@@ -46,7 +61,13 @@ private struct HeaderBlock: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .padding(AppSpacing.lg)
         .frame(maxWidth: .infinity)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous)
+                .strokeBorder(AppTheme.panelStroke, lineWidth: 1)
+        )
     }
 }
 

@@ -23,6 +23,8 @@ enum AppTheme {
     static let muted = Color.secondary
     static let successTint = Color(red: 0.53, green: 0.95, blue: 0.76)
     static let voiceTint = Color(red: 0.42, green: 0.88, blue: 1.0)
+    static let panelStroke = Color.primary.opacity(0.08)
+    static let quietInk = Color.primary.opacity(0.82)
 }
 
 enum AppLanguage: String, CaseIterable, Identifiable {
@@ -73,6 +75,7 @@ struct PrimaryButton: View {
     let title: LocalizedStringKey
     var systemImage: String? = nil
     let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -80,12 +83,18 @@ struct PrimaryButton: View {
                 .font(.body.weight(.semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.82)
+                .foregroundStyle(Color(white: 0.88))
                 .frame(maxWidth: .infinity)
                 .frame(height: 56)
+                .background(Color.black, in: Capsule(style: .continuous))
+                .overlay(
+                    Capsule(style: .continuous)
+                        .strokeBorder(Color.white.opacity(0.12), lineWidth: 1)
+                )
         }
-        .buttonStyle(.borderedProminent)
-        .controlSize(.large)
-        .clipShape(Capsule(style: .continuous))
+        .buttonStyle(.plain)
+        .modifier(PressFeedbackModifier(disabled: reduceMotion))
+        .contentShape(Capsule(style: .continuous))
     }
 }
 
@@ -145,7 +154,11 @@ struct AppSection<Content: View>: View {
         }
         .padding(AppSpacing.md)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppTheme.surface, in: RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous)
+                .strokeBorder(AppTheme.panelStroke, lineWidth: 1)
+        )
     }
 }
 
