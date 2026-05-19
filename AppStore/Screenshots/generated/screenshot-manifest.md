@@ -12,3 +12,5 @@ The first two screenshots use OpenAI Image V2 generated backgrounds integrated w
 - `04-trial-apple-checkout.png` - Try Pro for 3 days - 1320x2868 - Composed native subscription messaging
 - `05-output-language.png` - Choose the voice you hear - 1320x2868 - Composed language-control UI
 - `06-private-by-design.png` - Private by design - 1320x2868 - Composed privacy/trust UI
+- `07-match-day-mexico.png` - Made for match-day Mexico - 1320x2868 - Composed event/travel marketing screenshot
+- `08-eight-language-passport.png` - One tap. Eight voices. - 1320x2868 - Composed multi-language marketing screenshot

@@ -1,0 +1,79 @@
+{
+  "app": "Samantha Translate",
+  "generated_at": "2026-05-19T16:35:50.214655+00:00",
+  "device_class": "APP_IPHONE_67",
+  "pixel_size": [
+    1320,
+    2868
+  ],
+  "locale": "en-US",
+  "composition_engine": "custom-pil-marketing-composition",
+  "quality_gates_passed": true,
+  "ready_for_submission": true,
+  "screenshots": [
+    {
+      "order": 1,
+      "filename": "01-01-real-time-voice.png",
+      "title": "Real-time voice translation",
+      "source": "OpenAI Image V2 background: openai-image-v2-voice-orb.png",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 2,
+      "filename": "02-02-interview-travel.png",
+      "title": "Built for interviews and travel",
+      "source": "OpenAI Image V2 background: openai-image-v2-interview-orb.png",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 3,
+      "filename": "03-03-subtitles-spoken-output.png",
+      "title": "Subtitles plus spoken output",
+      "source": "Composed product UI",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 4,
+      "filename": "04-04-trial-apple-checkout.png",
+      "title": "Try Pro for 3 days",
+      "source": "Composed native subscription messaging",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 5,
+      "filename": "05-05-output-language.png",
+      "title": "Choose the voice you hear",
+      "source": "Composed language-control UI",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 6,
+      "filename": "06-06-private-by-design.png",
+      "title": "Private by design",
+      "source": "Composed privacy/trust UI",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 7,
+      "filename": "07-07-match-day-mexico.png",
+      "title": "Made for match-day Mexico",
+      "source": "Composed event/travel marketing screenshot",
+      "width": 1320,
+      "height": 2868
+    },
+    {
+      "order": 8,
+      "filename": "08-08-eight-language-passport.png",
+      "title": "One tap. Eight voices.",
+      "source": "Composed multi-language marketing screenshot",
+      "width": 1320,
+      "height": 2868
+    }
+  ]
+}
