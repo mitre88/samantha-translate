@@ -28,6 +28,7 @@
 /* Begin PBXFileReference section */
 		052CE334E8FACBE45FE37855 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08D2164CF75B3F47838CFCC5 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		093095DB363D73E4DCA1B244 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		13C53F0DC84D31D81A9290AF /* EntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitlementStore.swift; sourceTree = "<group>"; };
 		1F6C977CD7896E25D8BD357D /* BackendClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendClient.swift; sourceTree = "<group>"; };
 		3C03BD626FFE8A8C71C14EBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 				en,
 				es,
 				fr,
+				it,
 				ja,
 				"zh-Hans",
 			);
@@ -229,6 +231,7 @@
 				50643992C170F035C6162CFC /* en */,
 				DB12A7FFD74E9B82283C5156 /* es */,
 				858E98F8C9B6D67703206957 /* fr */,
+				093095DB363D73E4DCA1B244 /* it */,
 				08D2164CF75B3F47838CFCC5 /* ja */,
 				6E0C35E87ACB1DBC41B18478 /* zh-Hans */,
 			);

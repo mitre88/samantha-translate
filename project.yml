@@ -30,7 +30,9 @@ targets:
     type: application
     platform: iOS
     sources:
-      - SamanthaTranslate
+      - path: SamanthaTranslate
+        excludes:
+          - "**/* 2.swift"
     dependencies:
       - package: WebRTC
     settings:

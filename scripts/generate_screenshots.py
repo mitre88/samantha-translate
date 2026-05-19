@@ -231,7 +231,14 @@ def screen_05():
     draw.ellipse((800, 2220, 1600, 3000), fill=(217, 251, 240))
     text_lines(draw, (92, 140), "Choose the voice you hear", 84, (8, 12, 18), "bold", 1080, 14)
     text_lines(draw, (92, 350), "Set the language Samantha speaks back in real time.", 38, (86, 94, 104), "regular", 1040, 8)
-    languages = [("English", "EN", True), ("Spanish", "ES", False), ("French", "FR", False), ("Chinese", "ZH", False), ("Japanese", "JA", False)]
+    languages = [
+        ("English", "EN", True),
+        ("Spanish", "ES", False),
+        ("French", "FR", False),
+        ("Italian", "IT", False),
+        ("Chinese", "ZH", False),
+        ("Japanese", "JA", False),
+    ]
     y = 720
     for name, code, active in languages:
         fill = (16, 19, 24) if active else WHITE
@@ -283,8 +290,10 @@ SCREENS = [
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    for existing in OUT.glob("*.png"):
-        existing.unlink()
+    for filename, _, _, _ in SCREENS:
+        existing = OUT / filename
+        if existing.exists():
+            existing.unlink()
 
     manifest = [
         "# Screenshot Manifest",

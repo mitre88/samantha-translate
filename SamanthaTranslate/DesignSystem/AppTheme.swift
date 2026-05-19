@@ -29,6 +29,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     case english = "en"
     case spanish = "es"
     case french = "fr"
+    case italian = "it"
     case chinese = "zh-Hans"
     case japanese = "ja"
 
@@ -39,6 +40,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         case .english: "language.english"
         case .spanish: "language.spanish"
         case .french: "language.french"
+        case .italian: "language.italian"
         case .chinese: "language.chinese"
         case .japanese: "language.japanese"
         }
@@ -49,6 +51,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         case .english: "English"
         case .spanish: "Spanish"
         case .french: "French"
+        case .italian: "Italian"
         case .chinese: "Simplified Chinese"
         case .japanese: "Japanese"
         }
@@ -59,6 +62,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         case .english: "en"
         case .spanish: "es"
         case .french: "fr"
+        case .italian: "it"
         case .chinese: "zh"
         case .japanese: "ja"
         }
