@@ -230,27 +230,33 @@ def screen_05():
     draw.ellipse((-360, -260, 740, 720), fill=(231, 226, 255))
     draw.ellipse((800, 2220, 1600, 3000), fill=(217, 251, 240))
     text_lines(draw, (92, 140), "Choose the voice you hear", 84, (8, 12, 18), "bold", 1080, 14)
-    text_lines(draw, (92, 350), "Set the language Samantha speaks back in real time.", 38, (86, 94, 104), "regular", 1040, 8)
+    text_lines(draw, (92, 350), "Eight output languages ready for live conversations.", 38, (86, 94, 104), "regular", 1040, 8)
     languages = [
         ("English", "EN", True),
         ("Spanish", "ES", False),
         ("French", "FR", False),
         ("Italian", "IT", False),
+        ("Korean", "KO", False),
+        ("Portuguese", "PT", False),
         ("Chinese", "ZH", False),
         ("Japanese", "JA", False),
     ]
-    y = 720
-    for name, code, active in languages:
+    tile_w = 520
+    tile_h = 294
+    x_positions = [120, 680]
+    y_positions = [690, 1030, 1370, 1710]
+    for index, (name, code, active) in enumerate(languages):
+        x = x_positions[index % 2]
+        y = y_positions[index // 2]
         fill = (16, 19, 24) if active else WHITE
         stroke = (16, 19, 24) if active else (224, 230, 236)
         label = WHITE if active else (12, 17, 22)
         sub = (183, 189, 197) if active else (91, 99, 108)
-        rounded(draw, (120, y, 1200, y + 220), 40, fill, stroke, 2)
-        rounded(draw, (178, y + 54, 290, y + 166), 32, WHITE if active else (234, 238, 242))
-        draw.text((208, y + 88), code, font=font(30, "bold"), fill=(12, 17, 22))
-        draw.text((338, y + 54), name, font=font(48, "bold"), fill=label)
-        draw.text((338, y + 120), "Spoken output language", font=font(30), fill=sub)
-        y += 260
+        rounded(draw, (x, y, x + tile_w, y + tile_h), 40, fill, stroke, 2)
+        rounded(draw, (x + 42, y + 44, x + 138, y + 140), 30, WHITE if active else (234, 238, 242))
+        draw.text((x + 68, y + 74), code, font=font(28, "bold"), fill=(12, 17, 22))
+        draw.text((x + 42, y + 172), name, font=font(42, "bold"), fill=label)
+        draw.text((x + 42, y + 230), "Spoken output", font=font(28), fill=sub)
     draw.text((92, 2600), "Samantha Translate", font=font(34, "bold"), fill=(91, 98, 105))
     return img
 

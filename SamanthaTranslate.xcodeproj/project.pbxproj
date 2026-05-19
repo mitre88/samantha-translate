@@ -39,6 +39,7 @@
 		6E0C35E87ACB1DBC41B18478 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		78E23E3EC7232416DDD1A8DA /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		858E98F8C9B6D67703206957 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A092B8458C89374EB1AA0387 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A2DC9CC821923035AA208F95 /* SamanthaTranslate.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SamanthaTranslate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8A96E40F56D2754A65825C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C2D8A33FF0E4D6D1A7CBB9AA /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 		DF2A1D62ED4BF39910009CDD /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		E2B541BDC25E8F2589AAC035 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAB9947B53B19BB764CD7622 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		FD318B137472C1F082163C8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,8 @@
 				fr,
 				it,
 				ja,
+				ko,
+				"pt-BR",
 				"zh-Hans",
 			);
 			mainGroup = E6BA1405061EF7CD6500B686;
@@ -233,6 +237,8 @@
 				858E98F8C9B6D67703206957 /* fr */,
 				093095DB363D73E4DCA1B244 /* it */,
 				08D2164CF75B3F47838CFCC5 /* ja */,
+				FD318B137472C1F082163C8F /* ko */,
+				A092B8458C89374EB1AA0387 /* pt-BR */,
 				6E0C35E87ACB1DBC41B18478 /* zh-Hans */,
 			);
 			name = Localizable.strings;

@@ -8,7 +8,7 @@ Premium iOS voice translator with a minimal SwiftUI interface, StoreKit subscrip
 - Bundle ID: `com.alexmitre.samanthatranslate`
 - Product ID: `samantha_translate_weekly`
 - Trial: 3 days free, then US$4.99/week
-- Supported UI languages: English, Spanish, French, Italian, Simplified Chinese, Japanese
+- Supported UI languages: English, Spanish, French, Italian, Korean, Portuguese, Simplified Chinese, Japanese
 - Data policy: no stored audio, transcripts, or translation history
 
 ## Structure
