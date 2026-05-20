@@ -8,15 +8,23 @@ struct OnboardingView: View {
             ZStack {
                 AppTheme.pageBackground.ignoresSafeArea()
 
-                VStack(spacing: AppSpacing.lg) {
-                    Spacer(minLength: AppSpacing.md)
-                    HeaderBlock()
-                    FeatureList()
-                    Spacer(minLength: AppSpacing.md)
-                    PrimaryButton(title: "onboarding.continue", systemImage: "arrow.right", action: onContinue)
+                ScrollView {
+                    VStack(spacing: AppSpacing.md) {
+                        HeaderBlock()
+                        FeatureList()
+                    }
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.top, AppSpacing.md)
+                    .padding(.bottom, 96)
                 }
-                .padding(.horizontal, AppSpacing.lg)
-                .padding(.vertical, AppSpacing.lg)
+                .scrollIndicators(.hidden)
+            }
+            .safeAreaInset(edge: .bottom) {
+                PrimaryButton(title: "onboarding.continue", systemImage: "arrow.right", action: onContinue)
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.top, AppSpacing.sm)
+                    .padding(.bottom, AppSpacing.sm)
+                    .background(.regularMaterial)
             }
             .navigationTitle("")
             .toolbar(.hidden, for: .navigationBar)
@@ -30,12 +38,12 @@ private struct HeaderBlock: View {
             ZStack {
                 Circle()
                     .fill(AppTheme.voiceTint.opacity(0.16))
-                    .frame(width: 220, height: 220)
+                    .frame(width: 190, height: 190)
                     .blur(radius: 34)
 
-                VoiceOrb(isListening: true, size: 128)
+                VoiceOrb(isListening: true, size: 112)
             }
-            .frame(height: 156)
+            .frame(height: 130)
             .accessibilityHidden(true)
 
             VStack(spacing: AppSpacing.sm) {
@@ -61,7 +69,7 @@ private struct HeaderBlock: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(AppSpacing.lg)
+        .padding(AppSpacing.md)
         .frame(maxWidth: .infinity)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous))
         .overlay(
